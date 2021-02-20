@@ -137,19 +137,16 @@ CREATE TABLE `users` (
   `mail_id` varchar(100) NOT NULL,
   `que` varchar(50) NOT NULL,
   `answer` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL
+  `password` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `f_name`, `l_name`, `mail_id`, `que`, `answer`, `password`) VALUES
-(2, 'Rohan', 'Lokhande', 'rohan@gmail.com', 'Your favourite book', 'GOT', '12345678'),
-(5, 'Varun', 'Nair', 'varun@gmail.com', 'Your best friend', 'myself', 'Varun@123'),
-(6, 'NIRANJAN ', 'KHEDKAR', 'niranjan@gmail.com', 'Your favourite book', 'harrry potter', '123'),
-(8, 'Omkar', 'patil', 'omkar@gmail.com', 'Your favourite book', 'wings of fire', '12345'),
-(9, 'Omkar', 'Patil', 'omka@gmail.com', 'Your favourite book', 'wings of fire', '12345');
+INSERT INTO `users` (`ID`, `f_name`, `l_name`, `mail_id`, `que`, `answer`, `password`, `username`) VALUES
+(1, 'Rohan', 'Lokhande', 'rohan@gmail.com', 'Your favourite book', 'GOT', '1234', 'rohanl');
 
 --
 -- Indexes for dumped tables
