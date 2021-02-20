@@ -5,7 +5,6 @@ from PIL import ImageTk, Image
 import mysql.connector
 import pymysql
 
-
 class User_Login:
     def __init__(self,root):
         self.root = root
@@ -17,56 +16,47 @@ class User_Login:
         self.bg= ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/bglogin.jpg"))
         bg= Label(self.root,image=self.bg)
         bg.place(x=0,y=0,relwidth=1,relheight=1)
-        self.login_b=ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/button_login (3).png"))
+        self.login_b=ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/button_login.png"))
         log_btn=Label(self.root,image=self.login_b)
-        log_btn.place(x = 400, y = 200, height = 400, width = 800)
-        self.regs_b=ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/button_sign-up (1).png"))
+        log_btn.place(x = 400, y = 220, height = 350, width = 800)
+        self.regs_b=ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/button_register.png"))
         #reg_btn=Label(self.root,image=self.reg_btn)
         #reg_btn.place(x=175, y=400, height = 75, width = 200)
         self.pass_b=ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/button_forgot-password (1).png"))
         #pass_btn=Label(self.root,image=self.pass_btn)
         #pass_btn.place(x=50, y = 230, width = 200, height = 50)
-        self.usr_id = StringVar()
+        self.user_name = StringVar()
         self.usr_pass = StringVar()
         self.usr_type = StringVar()
 
         self.login_frame = LabelFrame(self.root, text="LOGIN", bg = "white", font =("Arial",22))
-        self.login_frame.place(x = 400, y = 200, height = 400, width = 800)
+        self.login_frame.place(x = 400, y = 220, height = 350, width = 800)
 
-        login_type = Label(self.login_frame, text = "Login as ",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
+        login_type = Label(self.login_frame, text = " Login as : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
 
         self.login_as = ttk.Combobox(self.login_frame,textvariable = self.usr_type, font =("Times New Roman",18), width = 47,state = "readonly" , justify = "center")
-        self.login_as['values']=("Select","Buyer","Seller")
+        self.login_as['values']=("Buyer","Seller")
         self.login_as.grid(row = 0, column = 1,padx = 10, pady = 15,sticky="w")
         self.login_as.current(0)
 
-        login_id = Label(self.login_frame, text = "ID ",bg = "tomato", font =("Times New Roman",18)).grid(row = 1, column = 0,padx = 10, pady = 15,sticky="w")
+        login_id = Label(self.login_frame, text = " Username : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 1, column = 0,padx = 10, pady = 15,sticky="w")
 
-        self.login_iden = Entry(self.login_frame, textvariable = self.usr_id,bd="3",width = 45,bg = "LightGray", font =("Arial",18))
+        self.login_iden = Entry(self.login_frame, textvariable = self.user_name,bd="3",width = 45,bg = "LightGray", font =("Arial",18))
         self.login_iden.grid(row = 1, column = 1,padx = 10, pady = 15,sticky="w")
 
-        login_pass = Label(self.login_frame, text = "Password ",bg = "tomato", font =("Times New Roman",18)).grid(row = 2, column = 0,padx = 10, pady = 15,sticky="w")
+        login_pass = Label(self.login_frame, text = " Password : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 2, column = 0,padx = 10, pady = 15,sticky="w")
 
         self.login_passen = Entry(self.login_frame,textvariable =self.usr_pass ,show="*",bd="3", width = 49,bg = "LightGray", font =("Times New Roman",18))
         self.login_passen.grid(row = 2, column = 1,padx = 10, pady = 15,sticky="w")
 
         self.login_button = Button(self.login_frame, image=self.login_b, font =("Impact",14),bd="0", command = self.ureg_login)
-        self.login_button.place(x=275, y = 230, width = 200, height = 50)
+        self.login_button.place(x=305, y = 230, width = 200, height = 50)
 
         self.forgot = Button(self.login_frame,image=self.pass_b,bg="tomato", bd="0",fg="Blue",font =("Ar Delaney",16), command = self.ureg_forgotpass)
-        self.forgot.place(x=50, y = 230, width = 200, height = 50)
+        self.forgot.place(x=50, y = 230, width = 230, height = 50)
 
         self.register_button = Button(self.login_frame,image=self.regs_b, font =("Colonna MT",13),bd="0",bg="tomato",fg="Blue", command= self.register)
-        self.register_button.place(x=500, y =230, width = 200, height = 50)
-
-        
-
-        # self.back_btn = Button(self.root, text  = "<BACK", font =("Arial",18),bd="0",bg="tomato",fg="tomato", command= self.back)
-        # self.back_btn.grid(row=0,column=0)
-
-    def back(self):
-        self.root.destroy()
-        import GUI
+        self.register_button.place(x=530, y =230, width = 200, height = 50)
 
     def new_password(self):
         if self.usrnew_iden.get() =="" or self.answeren.get() =="" or self.usrnew_passen.get() =="":
@@ -75,8 +65,6 @@ class User_Login:
             try:
                 con=pymysql.connect(host="localhost",user="root",passwd="root",database="ims")
                 cur =con.cursor()
-                #select = "SELECT * FROM USERS WHERE mail_id = %s"
-                #value = (self.usrnew_iden.get())
                 cur.execute("SELECT * FROM USERS WHERE mail_id = %s",self.usrnew_iden.get())
                 rows = cur.fetchall()
                 if rows == NONE:
@@ -98,38 +86,34 @@ class User_Login:
                 self.usrnew_passen.delete(0,END)
     
     def ureg_login(self):
-        if self.usr_id.get() =="" or self.usr_pass.get() =="":
+        if self.user_name.get() =="" or self.usr_pass.get() =="":
             messagebox.showerror("Error","All fields are mandatory",parent = self.root)
         else:
-            #try:
             con = mysql.connector.connect(host="localhost",user="root",passwd="root",database="ims")
-            cur = con.cursor(buffetomato=True)
-            select = "SELECT * FROM USERS WHERE mail_id = %s and password = %s"
-            value = (self.usr_id.get(),self.usr_pass.get())
+            cur = con.cursor(buffered=True)
+            select = "SELECT * FROM USERS WHERE username = %s and password = %s"
+            value = (self.user_name.get(),self.usr_pass.get())
             cur.execute(select,value)
             rows = cur.fetchone()
-            # print(rows)
             if rows == NONE:
                 messagebox.showerror("Error","Invalid Ctomatoentials",parent = self.root)
                 self.usr_pass.set('')
-                self.usr_id.set('')
+                self.user_name.set('')
 
             else:
                 if self.usr_type.get() == "Seller":
                    self.root.destroy()
                    import supplier
-                   supplier.run_supplier(self.usr_id.get())
+                   supplier.run_supplier(self.user_name.get())
                 elif self.usr_type.get() == "Buyer":
                     self.root.destroy()
                     import buyer
-                    buyer.run_buyer(self.usr_id.get())
+                    buyer.run_buyer(self.user_name.get())
                    
 
 
             con.commit()
             con.close()
-            #except Exception as es:
-                #messagebox.showerror("Error",f"{es}",parent = self.root)
             
     
     def ureg_forgotpass(self):
@@ -165,10 +149,6 @@ class User_Login:
     def register(self):
         self.root.destroy()
         import register
-
-        
-        
-
 
 root = Tk()
 obj = User_Login(root)
