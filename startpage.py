@@ -18,21 +18,26 @@ class User_Login:
         bg.place(x=0,y=0,relwidth=1,relheight=1)
         self.login_b=ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/button_login.png"))
         log_btn=Label(self.root,image=self.login_b)
-        log_btn.place(x = 400, y = 220, height = 350, width = 800)
+        log_btn.place(x = 400, y = 260, height = 350, width = 800)
         self.regs_b=ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/button_register.png"))
         #reg_btn=Label(self.root,image=self.reg_btn)
         #reg_btn.place(x=175, y=400, height = 75, width = 200)
         self.pass_b=ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/button_forgot-password (1).png"))
+        self.titlebg=ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/title.png"))
         #pass_btn=Label(self.root,image=self.pass_btn)
         #pass_btn.place(x=50, y = 230, width = 200, height = 50)
         self.user_name = StringVar()
         self.usr_pass = StringVar()
         self.usr_type = StringVar()
-
+        self.logo= ImageTk.PhotoImage(Image.open("C:/Inventory-managament-system-main/logo.jpg"))
+        logo= Label(self.root,image=self.logo)
+        logo.place(x=400,y=130,width=100,height=100)
+        ims= Label(self.root,text="Inventory Management System",font =("Times New Roman",40),image=self.titlebg)
+        ims.place(x=520,y=130,width=680,height=100)
         self.login_frame = LabelFrame(self.root, text="LOGIN", bg = "white", font =("Arial",22))
-        self.login_frame.place(x = 400, y = 220, height = 350, width = 800)
-
-        login_type = Label(self.login_frame, text = " Login as : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
+        self.login_frame.place(x = 400, y = 260, height = 350, width = 800)
+        
+        login_type = Label(self.login_frame, text = "   Login as : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
 
         self.login_as = ttk.Combobox(self.login_frame,textvariable = self.usr_type, font =("Times New Roman",18), width = 47,state = "readonly" , justify = "center")
         self.login_as['values']=("Buyer","Seller")
@@ -44,7 +49,7 @@ class User_Login:
         self.login_iden = Entry(self.login_frame, textvariable = self.user_name,bd="3",width = 45,bg = "LightGray", font =("Arial",18))
         self.login_iden.grid(row = 1, column = 1,padx = 10, pady = 15,sticky="w")
 
-        login_pass = Label(self.login_frame, text = " Password : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 2, column = 0,padx = 10, pady = 15,sticky="w")
+        login_pass = Label(self.login_frame, text = "  Password : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 2, column = 0,padx = 10, pady = 15,sticky="w")
 
         self.login_passen = Entry(self.login_frame,textvariable =self.usr_pass ,show="*",bd="3", width = 49,bg = "LightGray", font =("Times New Roman",18))
         self.login_passen.grid(row = 2, column = 1,padx = 10, pady = 15,sticky="w")
@@ -68,12 +73,12 @@ class User_Login:
                 cur.execute("SELECT * FROM USERS WHERE mail_id = %s",self.usrnew_iden.get())
                 rows = cur.fetchall()
                 if rows == NONE:
-                    messagebox.showerror("Error","Invalid Ctomatoentials",parent = self.root)
+                    messagebox.showerror("Error","Invalid Credentials",parent = self.root)
                 else:
                     update = "UPDATE USERS SET password=%s WHERE mail_id = %s  "
                     value = (self.usrnew_passen.get(),self.usrnew_iden.get())
                     cur.execute(update,value)
-                    messagebox.showinfo("Success","Password changed successfull",parent = self.root2)
+                    messagebox.showinfo("Success","Password changed successfully!",parent = self.root2)
                     self.root2.destroy()
                     con.commit()
 
@@ -96,7 +101,7 @@ class User_Login:
             cur.execute(select,value)
             rows = cur.fetchone()
             if rows == NONE:
-                messagebox.showerror("Error","Invalid Ctomatoentials",parent = self.root)
+                messagebox.showerror("Error","Invalid Credentials",parent = self.root)
                 self.usr_pass.set('')
                 self.user_name.set('')
 
@@ -119,16 +124,16 @@ class User_Login:
     def ureg_forgotpass(self):
         self.root2 = Toplevel()
         self.root2.geometry("580x430+550+200")
-        self.root2.config(bg="peach puff")
+        self.root2.config(bg="tomato")
         self.root2.focus_force()
         self.root2.grab_set()
-        for_label = Label(self.root2, text = "FORGOT PASSWORD", font =("Arial",20),bg="white")
-        for_label.place(x=155 ,y=30)
+        for_label = Label(self.root2, text = "PASSWORD RECOVERY", font =("Arial",20),bg="white")
+        for_label.place(x=130 ,y=30)
         usrnew_id = Label(self.root2, text = "E-mail id  : ",bg = "white", font =("Arial",16))
         usrnew_id.place(x=10 ,y=100)
         self.usrnew_iden = Entry(self.root2, width = 30, font =("Arial",16),bd = "5")
         self.usrnew_iden.place(x = 175, y = 100)
-        security = Label(self.root2, text = "Security Que : ", font =("Arial",16),bg = "white")
+        security = Label(self.root2, text = "Security Question : ", font =("Arial",16),bg = "white")
         security.place(x=10 ,y=165)
         self.security_combo = ttk.Combobox(self.root2, font =("Arial",16), state = "readonly" , width = 20, justify = "center")
         self.security_combo['values']=("Select","Your favourite book","Your favourite movie","Your best friend")
