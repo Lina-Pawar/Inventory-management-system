@@ -67,6 +67,7 @@ INSERT INTO `inventory` (`product_id`, `product_name`, `product_qty`, `product_p
 --
 
 CREATE TABLE `sales_bill` (
+  `bill_no` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `items` varchar(200) NOT NULL,
   `date` varchar(10) CHARACTER SET latin1 NOT NULL,
@@ -133,6 +134,7 @@ CREATE TABLE `users` (
   `id` bigint(10) NOT NULL,
   `f_name` varchar(50) NOT NULL,
   `l_name` varchar(50) NOT NULL,
+  `contact` bigint(10) NOT NULL,
   `mail_id` varchar(100) NOT NULL,
   `que` varchar(50) NOT NULL,
   `answer` varchar(50) NOT NULL,
@@ -144,8 +146,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `f_name`, `l_name`, `mail_id`, `que`, `answer`, `password`, `username`) VALUES
-(1, 'Lina', 'Pawar', 'lpawar@gmail.com', 'Your favourite movie', 'Resident evil', '2911', 'lina');
+INSERT INTO `users` (`id`, `f_name`, `l_name`, `contact`, `mail_id`, `que`, `answer`, `password`, `username`) VALUES
+(1, 'Lina', 'Pawar', 9970749700, 'lpawar@gmail.com', 'Your favourite movie', 'Resident evil', '2911', 'lina');
 
 --
 -- Indexes for dumped tables
