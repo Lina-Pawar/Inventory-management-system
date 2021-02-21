@@ -10,22 +10,15 @@ class User_Register:
         self.root.title('Inventory Management')
         self.root.geometry("1600x800+0+0")
         self.root.iconbitmap('D:/IMS/icons/Iconinv.ico')
-
-
-        self.bg= ImageTk.PhotoImage(Image.open("D:/IMS/icons/bglogin.jpg"))
+        self.bg= ImageTk.PhotoImage(Image.open("D:/IMS/icons/bgregister.png"))
         bg= Label(self.root,image=self.bg)
         bg.place(x=0,y=0,relwidth=1,relheight=1)
         self.login_b=ImageTk.PhotoImage(Image.open("D:/IMS/icons/button_login.png"))
-        log_btn=Label(self.root,image=self.login_b)
-        log_btn.place(x=175, y=550, height = 50, width = 250)
         self.regs_b=ImageTk.PhotoImage(Image.open("D:/IMS/icons/button_register.png"))
-        #reg_btn=Label(self.root,image=self.reg_btn)
-        #reg_btn.place(x=175, y=400, height = 75, width = 300)
+        
         def back():
-
             self.root.destroy()
             import startpage
-
 
         def login():
             self.root.destroy()
@@ -93,10 +86,10 @@ class User_Register:
         usrnew_uname = Label(self.usrn_frame, text = "Username      : ", font =("Arial",16),bg="White").grid(row = 8, column = 0, padx = 10, pady = 10)
         self.usrnew_username = Entry(self.usrn_frame, width = 40, font =("Arial",16))
         self.usrnew_username.grid(row = 8, column = 1, padx = 10, pady = 10)
-        self.usrreg_login = Button (self.usrn_frame, image=self.regs_b, command = unew_login, font = ("Arial",18) )
-        self.usrreg_login.place(x=210, y=400, height = 50, width = 250)
-        self.signup = Button(self.root, image=self.login_b, command = login, font = ("Arial",18) )
-        self.signup.place(x=175, y=550, height = 50, width = 250)
+        self.register = Button (self.usrn_frame, image=self.regs_b, command = unew_login, font = ("Arial",18) )
+        self.register.place(x=210, y=400, height = 50, width = 250)
+        self.login = Button(self.root, image=self.login_b, command = login, font = ("Arial",18) )
+        self.login.place(x=110, y=570, height = 50, width = 250)
         self.back_btn = Button(self.root, text  = "<BACK", font =("Arial",18),bd="0",bg="White",fg="RED", command= back)
         self.back_btn.grid(row=0, column=0)
         

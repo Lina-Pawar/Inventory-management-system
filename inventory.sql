@@ -28,7 +28,6 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `inventory` (
-  `mail_id` varchar(100) NOT NULL,
   `product_id` int(50) NOT NULL,
   `product_name` varchar(150) NOT NULL,
   `product_qty` int(100) NOT NULL,
@@ -40,26 +39,26 @@ CREATE TABLE `inventory` (
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`mail_id`, `product_id`, `product_name`, `product_qty`, `product_price`, `total`) VALUES
-('rohan@gmail.com', 7714, 'football', 50, 300, 15000),
-('rohan@gmail.com', 7920, 'handball', 49, 200, 10000),
-('rohan@gmail.com', 4481, 'volleyball', 65, 450, 33750),
-('rohan@gmail.com', 9050, 'basketball', 49, 500, 25000),
-('rohan@gmail.com', 7648, 'soft-tennis-ball', 90, 30, 3000),
-('rohan@gmail.com', 1352, 'hard-tennis-ball', 100, 60, 6000),
-('rohan@gmail.com', 6857, 'puck', 100, 100, 10000),
-('rohan@gmail.com', 5395, 'pingpong ball', 200, 20, 4000),
-('rohan@gmail.com', 1062, 'red season ball', 150, 200, 30000),
-('rohan@gmail.com', 2446, 'white season ball', 200, 250, 50000),
-('rohan@gmail.com', 5368, 'shuttle cock', 500, 80, 40000),
-('rohan@gmail.com', 8950, 'english willow bat', 40, 2500, 100000),
-('rohan@gmail.com', 2466, 'kashmir willow bat', 50, 3000, 150000),
-('rohan@gmail.com', 8667, 'rackets', 50, 450, 27000),
-('rohan@gmail.com', 8351, 'net', 40, 300, 15000),
-('rohan@gmail.com', 2390, 'cricket kit', 30, 7000, 210000),
-('rohan@gmail.com', 9796, 'supporter', 200, 150, 30000),
-('rohan@gmail.com', 2075, 'spikes', 75, 950, 71250),
-('rohan@gmail.com', 4606, 'skipping rope', 50, 160, 8000);
+INSERT INTO `inventory` (`product_id`, `product_name`, `product_qty`, `product_price`, `total`) VALUES
+(7714, 'Football', 50, 300, 15000),
+(7920, 'Handball', 49, 200, 10000),
+(4481, 'Volleyball', 65, 450, 33750),
+(9050, 'Basketball', 49, 500, 25000),
+(7648, 'Soft-tennis-ball', 90, 30, 3000),
+(1352, 'Hard-tennis-ball', 100, 60, 6000),
+(6857, 'Puck', 100, 100, 10000),
+(5395, 'Pingpong ball', 200, 20, 4000),
+(1062, 'Red season ball', 150, 200, 30000),
+(2446, 'White season ball', 200, 250, 50000),
+(5368, 'Shuttle cock', 500, 80, 40000),
+(8950, 'English willow bat', 40, 2500, 100000),
+(2466, 'Kashmir willow bat', 50, 3000, 150000),
+(8667, 'Rackets', 50, 450, 27000),
+(8351, 'Net', 40, 300, 15000),
+(2390, 'cricket kit', 30, 7000, 210000),
+(9796, 'Supporter', 200, 150, 30000),
+(2075, 'Spikes', 75, 950, 71250),
+(4606, 'Skipping rope', 50, 160, 8000);
 
 -- --------------------------------------------------------
 
@@ -68,10 +67,10 @@ INSERT INTO `inventory` (`mail_id`, `product_id`, `product_name`, `product_qty`,
 --
 
 CREATE TABLE `sales_bill` (
-  `inv_id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `items` varchar(200) NOT NULL,
   `date` varchar(10) CHARACTER SET latin1 NOT NULL,
-  `amount` int(11) NOT NULL,
-  `mail_id` varchar(500) NOT NULL
+  `amount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -131,7 +130,7 @@ INSERT INTO `sales_stocks` (`inv_id`, `item_no`, `qty`) VALUES
 --
 
 CREATE TABLE `users` (
-  `ID` bigint(10) NOT NULL,
+  `id` bigint(10) NOT NULL,
   `f_name` varchar(50) NOT NULL,
   `l_name` varchar(50) NOT NULL,
   `mail_id` varchar(100) NOT NULL,
@@ -145,8 +144,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `f_name`, `l_name`, `mail_id`, `que`, `answer`, `password`, `username`) VALUES
-(1, 'Rohan', 'Lokhande', 'rohan@gmail.com', 'Your favourite book', 'GOT', '1234', 'rohanl');
+INSERT INTO `users` (`id`, `f_name`, `l_name`, `mail_id`, `que`, `answer`, `password`, `username`) VALUES
+(1, 'Lina', 'Pawar', 'lpawar@gmail.com', 'Your favourite movie', 'Resident evil', '2911', 'lina');
 
 --
 -- Indexes for dumped tables
