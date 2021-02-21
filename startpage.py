@@ -29,7 +29,7 @@ class User_Login:
         ims= Label(self.root,text="Inventory Management System",font =("Times New Roman",40),image=self.titlebg)
         ims.place(x=520,y=130,width=680,height=100)
         self.login_frame = LabelFrame(self.root, text="LOGIN", bg = "white", font =("Arial",22))
-        self.login_frame.place(x = 400, y = 260, height = 350, width = 800)
+        self.login_frame.place(x = 400, y = 260, height = 350, width = 780)
         
         login_type = Label(self.login_frame, text = "   Login as : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
 
