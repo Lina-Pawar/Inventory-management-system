@@ -26,7 +26,7 @@ class User_Login:
         self.logo= ImageTk.PhotoImage(Image.open("D:/IMS/icons/logo.jpg"))
         logo= Label(self.root,image=self.logo)
         logo.place(x=400,y=130,width=100,height=100)
-        ims= Label(self.root,text="Inventory Management System",font =("Times New Roman",40),image=self.titlebg)
+        ims= Label(self.root,text="Inventory Management System",font =("Times New Roman",35),image=self.titlebg)
         ims.place(x=520,y=130,width=680,height=100)
         self.login_frame = LabelFrame(self.root, text="LOGIN", bg = "white", font =("Arial",22))
         self.login_frame.place(x = 400, y = 260, height = 350, width = 780)
@@ -34,7 +34,7 @@ class User_Login:
         login_type = Label(self.login_frame, text = "   Login as : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
 
         self.login_as = ttk.Combobox(self.login_frame,textvariable = self.usr_type, font =("Times New Roman",18), width = 47,state = "readonly" , justify = "center")
-        self.login_as['values']=("Buyer","Seller")
+        self.login_as['values']=("User","Admin")
         self.login_as.grid(row = 0, column = 1,padx = 10, pady = 15,sticky="w")
         self.login_as.current(0)
 
@@ -100,11 +100,11 @@ class User_Login:
                 self.user_name.set('')
 
             else:
-                if self.usr_type.get() == "Seller":
+                if self.usr_type.get() == "Admin":
                    self.root.destroy()
                    import supplier
                    supplier.run_supplier(self.user_name.get())
-                elif self.usr_type.get() == "Buyer":
+                elif self.usr_type.get() == "User":
                     self.root.destroy()
                     import buyer
                     buyer.run_buyer(self.user_name.get())
