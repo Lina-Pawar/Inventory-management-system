@@ -20,11 +20,11 @@ class User_Register:
         logo.place(x=80,y=200,width=320,height=320)
         def back():
             self.root.destroy()
-            import startpage
+            import login
 
         def login():
             self.root.destroy()
-            import startpage
+            import login
 
         def unew_login():
             if self.usrnew_1sten.get() =="" or self.usrnew_lasten.get()=="" or self.usrnew_iden.get()=="" or self.answeren.get()=="" or self.usrnew_passen.get()=="" or self.usrnew_passcnen.get()=="" or self.usrnew_username.get()=="":
@@ -58,7 +58,7 @@ class User_Register:
                 except Exception as es:
                     messagebox.showerror("Error",f"Error due to {es}",parent = self.root)
                 self.root.destroy()
-                import startpage                                     
+                import login                                     
 
 
         self.usrn_frame = LabelFrame(self.root, text ="REGISTER", padx = 10, pady = 10, font =("Arial",20),bg="White")
