@@ -90,10 +90,10 @@ class User_Login:
             messagebox.showerror("Error","All fields are mandatory",parent = self.root)
         else:
             if self.usr_type.get() == "Admin":
-                if self.user_name.get()=="ims@admin" and self.usr_pass.get() =="Admin_alas":
+                if self.user_name.get()=="admin@ims" and self.usr_pass.get() =="admin_ims123":
                     self.root.destroy()
-                    import supplier
-                    supplier.run_supplier(self.user_name.get())
+                    import admin
+                    admin.run_admin(self.user_name.get())
                 else:
                     messagebox.showerror("Error","Incorrect login details!",parent = self.root)
                     self.usr_pass.set('')
