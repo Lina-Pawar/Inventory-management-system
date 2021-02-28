@@ -13,18 +13,18 @@ class User_Login:
         title=Label(self.root,text="INVENTORY MANAGEMENT",bd=10,relief=SOLID,fg="tomato",bg="navy",font=("times new roman",40,"bold"))
         title.pack(side=TOP,fill=X)
         
-        self.bg= ImageTk.PhotoImage(Image.open("D:/IMS/icons/bglogin.jpg"))
+        self.bg= ImageTk.PhotoImage(Image.open("../IMS/icons/bglogin.jpg"))
         bg= Label(self.root,image=self.bg)
         bg.place(x=0,y=0,relwidth=1,relheight=1)
-        self.login_b=ImageTk.PhotoImage(Image.open("D:/IMS/icons/button_login.png"))
-        self.regs_b=ImageTk.PhotoImage(Image.open("D:/IMS/icons/button_register.png"))
-        self.pass_b=ImageTk.PhotoImage(Image.open("D:/IMS/icons/button_forgot-password (1).png"))
-        self.titlebg=ImageTk.PhotoImage(Image.open("D:/IMS/icons/title.png"))
-        self.passbg=ImageTk.PhotoImage(Image.open("D:/IMS/icons/bgpass.png"))
+        self.login_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_login.png"))
+        self.regs_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_register.png"))
+        self.pass_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_forgot-password (1).png"))
+        self.titlebg=ImageTk.PhotoImage(Image.open("../IMS/icons/title.png"))
+        self.passbg=ImageTk.PhotoImage(Image.open("../IMS/icons/bgpass.png"))
         self.user_name = StringVar()
         self.usr_pass = StringVar()
         self.usr_type = StringVar()
-        self.logo= ImageTk.PhotoImage(Image.open("D:/IMS/icons/logo.jpg"))
+        self.logo= ImageTk.PhotoImage(Image.open("../IMS/icons/logo.jpg"))
         logo= Label(self.root,image=self.logo)
         logo.place(x=400,y=130,width=100,height=100)
         ims= Label(self.root,text="Inventory Management System",font =("Times New Roman",35),image=self.titlebg)
@@ -49,13 +49,13 @@ class User_Login:
         self.login_passen = Entry(self.login_frame,textvariable =self.usr_pass ,show="*",bd="3", width = 48,bg = "LightGray", font =("Times New Roman",18))
         self.login_passen.grid(row = 2, column = 1,padx = 10, pady = 15,sticky="w")
 
-        self.login_button = Button(self.login_frame, image=self.login_b, font =("Impact",14),bd="0", command = self.ureg_login)
+        self.login_button = Button(self.login_frame, image=self.login_b, font =("Impact",14),bd=3,bg="red2", command = self.ureg_login)
         self.login_button.place(x=305, y = 230, width = 200, height = 50)
 
-        self.forgot = Button(self.login_frame,image=self.pass_b,bg="tomato", bd="0",fg="Blue",font =("Ar Delaney",16), command = self.ureg_forgotpass)
+        self.forgot = Button(self.login_frame,image=self.pass_b,bg="tomato",fg="Blue",font =("Ar Delaney",16),bd=3, command = self.ureg_forgotpass)
         self.forgot.place(x=50, y = 230, width = 230, height = 50)
 
-        self.register_button = Button(self.login_frame,image=self.regs_b, font =("Colonna MT",13),bd="0",bg="tomato",fg="Blue", command= self.register)
+        self.register_button = Button(self.login_frame,image=self.regs_b, font =("Colonna MT",13),bd=3,bg="red2",fg="Blue", command= self.register)
         self.register_button.place(x=530, y =230, width = 200, height = 50)
 
     def new_password(self):
@@ -126,7 +126,7 @@ class User_Login:
         self.root2.grab_set()
         for_label = Label(self.root2, image=self.passbg)
         for_label.place(x=0 ,y=0)
-        titlelabel=Label(self.root2,text = "PASSWORD RECOVERY", bd=2,relief=SOLID,font =("Times New Roman",24,"bold"),bg="White", fg="Black")
+        titlelabel=Label(self.root2,text = "PASSWORD RECOVERY", bd=3,relief=SOLID,font =("Times New Roman",24,"bold"),bg="White", fg="Black")
         titlelabel.place(x=5 ,y=5,relwidth=1,relheight=1)
         titlelabel.pack(side=TOP,fill=X)
         usrnew_id = Label(self.root2, text = "E-mail id  : ",bg="White", fg="Black", font =("Times New Roman",18))
@@ -147,7 +147,7 @@ class User_Login:
         usrnew_pass.place(x=20 ,y=270)
         self.usrnew_passen = Entry(self.root2,show = "*", width = 30,bg = "LightGray", font =("Times New Roman",18),bd = "5")
         self.usrnew_passen.place(x=185 ,y=270)
-        self.new_pass = Button(self.root2, text  = "Update Password", bd="0",bg="White", fg="Black",font =("Times New Roman",18,"bold"), command = self.new_password)
+        self.new_pass = Button(self.root2, text  = "Update Password", bd=3,bg="White", fg="Black",font =("Times New Roman",18,"bold"), command = self.new_password)
         self.new_pass.place(x = 200, y = 340)
         
 
@@ -157,5 +157,4 @@ class User_Login:
 
 root = Tk()
 obj = User_Login(root)
-
 root.mainloop()
