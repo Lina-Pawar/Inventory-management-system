@@ -8,16 +8,16 @@ Pre-Requisites:
 
 Make sure you have latest python version installed on your system.
 Make sure you have tkinkter, pymysql libraries installed on your system.
-Make sure you have mysql database installed on your system along with phpMyadmin to access database graphically.
+Make sure you have mysql database with mysql-connector-python installed on your system along with phpMyadmin to access database graphically.
 Steps to run:
 
-Create a database named 'ims' in phpmyadmin and now import ims.sql file that is provided in this repository.
+Create a database named 'ims' in phpmyadmin and now import inventory.sql file that is provided in this repository.
 Run startpage.py file from your terminal or command prompt.
 ---------------------------You are good to go -----------------------------------
 
 Important Note:- My mysql username is root and password is root and hostname is localhost. So, Make sure you change your settings according to your own username, password and hostname in all the three python files which otherwise would generate an error.
 Somethings to be kept in mind:
-1)first of all setup the xammp,php my admin in your pc and add the database their first by creatin the database with same name in local host and then import the downloaded sql file in it
-2)download all packages mentioned above at start of all files
-3)keep all files in single folder,save it
-4)change the locataion directories of all image locations,or programe will throw error o tkinter traceback imagetk
+1)First of all setup the xammp,php my admin in your pc and add the database their first by creatin the database with same name in local host and then import the downloaded sql file in it
+2)Download all packages mentioned above at start of all files
+3)Keep all files in single folder,save it
+4)Change the locataion directories of all image locations or it will throw error for tkinter traceback imagetk
