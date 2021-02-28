@@ -18,7 +18,7 @@ class User_Login:
         bg.place(x=0,y=0,relwidth=1,relheight=1)
         self.login_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_login.png"))
         self.regs_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_register.png"))
-        self.pass_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_forgot-password (1).png"))
+        self.pass_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_forgot_password.png"))
         self.titlebg=ImageTk.PhotoImage(Image.open("../IMS/icons/title.png"))
         self.passbg=ImageTk.PhotoImage(Image.open("../IMS/icons/bgpass.png"))
         self.user_name = StringVar()
