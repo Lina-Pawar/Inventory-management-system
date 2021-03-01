@@ -5,18 +5,16 @@ from tkinter import messagebox
 from PIL import Image,ImageTk
 import math,random
 
-
-
 class Customer:
     def __init__(self,root,id):
         self.root = root
-        self.root.title("----INVENTORY MANAGEMENT----")
+        self.root.title("Inventory Management")
         self.root.geometry("1600x800+0+0")
         self.root.iconbitmap('../IMS/icons/Iconinv.ico')
         bg_color="white"
-        title=Label(self.root,text="INVENTORY MANAGEMENT SYSTEM",bd=5,relief=SOLID,fg="white",bg="red2",font=("times new roman",40,"bold"))
+        title=Label(self.root,text="Inventory Management System",bd=5,relief=SOLID,fg="white",bg="red2",font=("times new roman",40,"bold"))
         title.pack(side=TOP,fill=X)
-        self.bg= ImageTk.PhotoImage(Image.open("../IMS/icons/bglogin.jpg"))
+        self.bg= ImageTk.PhotoImage(Image.open("../IMS/icons/bg.jpg"))
         bg= Label(self.root,image=self.bg)
         bg.place(x=0,y=72,relwidth=1,relheight=1)
         admin=Label(self.root, text="admin@ims", fg="white",bg="red2",font=("times new roman",14,"bold"))
@@ -25,5 +23,4 @@ class Customer:
 def run_admin(id):
     root=Tk() 
     obj=Customer(root,id)
-    print(id)
     root.mainloop()
