@@ -164,7 +164,7 @@ class User_Login:
         self.new_pass.place(x=305, y = 280, width = 200, height = 42)
 
         self.back_btn = Button(self.root2, text  = "<BACK", font =("Arial",18),bd=3,bg="White",fg="Red", command= self.back)
-        self.back_btn.place(x=0, y = 0, width = 200, height = 50)
+        self.back_btn.place(x=0, y = 0, width = 150, height = 50)
           
     def back(self):
         self.root.destroy()
