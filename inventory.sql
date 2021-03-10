@@ -20,10 +20,12 @@ SET time_zone = "+00:00";
 -- Database: `inventory`
 
 CREATE TABLE `inventory` (
-  `product_id` int(50) NOT NULL,
+  `product_id` int(5) NOT NULL,
   `product_name` varchar(150) NOT NULL,
-  `product_qty` int(100) NOT NULL,
-  `product_price` bigint(100) NOT NULL
+  `product_qty` int(5) NOT NULL,
+  `product_price` bigint(5) NOT NULL,
+  `threshold` INT(5) NOT NULL DEFAULT '10',
+  `sales` INT(5) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data for table `inventory`
@@ -44,7 +46,7 @@ INSERT INTO `inventory` (`product_id`, `product_name`, `product_qty`, `product_p
 (2466, 'Kashmir willow bat', 50, 3000),
 (8667, 'Rackets', 50, 450),
 (8351, 'Net', 40, 300),
-(2390, 'cricket kit', 30, 3000),
+(2390, 'Cricket kit', 30, 3000),
 (9796, 'Supporter', 200, 150),
 (2075, 'Spikes', 75, 950),
 (4606, 'Skipping rope', 50, 160);
@@ -52,25 +54,17 @@ INSERT INTO `inventory` (`product_id`, `product_name`, `product_qty`, `product_p
 -- Table structure for table `sales_bill`
 
 CREATE TABLE `sales_bill` (
-  `bill_no` int(11) NOT NULL,
+  `bill_no` int(5) NOT NULL,
   `username` varchar(50) NOT NULL,
   `items` varchar(200) NOT NULL,
   `date` varchar(10) CHARACTER SET latin1 NOT NULL,
-  `amount` int(11) NOT NULL
+  `amount` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Table structure for table `sales_stocks`
-
-CREATE TABLE `sales_stocks` (
-  `inv_id` int(11) NOT NULL,
-  `product` varchar(100) NOT NULL,
-  `qty` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Table structure for table `users`
 
 CREATE TABLE `users` (
-  `id` bigint(10) NOT NULL,
+  `id` int(5) NOT NULL,
   `f_name` varchar(50) NOT NULL,
   `l_name` varchar(50) NOT NULL,
   `contact` bigint(10) NOT NULL,
@@ -81,8 +75,6 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Data for table `users`
-
 INSERT INTO `users` (`id`, `f_name`, `l_name`, `contact`, `mail_id`, `que`, `answer`, `password`, `username`) VALUES
 (1, 'Lina', 'Pawar', 9970749700, 'lpawar@gmail.com', 'Your favourite movie', 'Resident evil', '2911', 'lina');
 
@@ -92,7 +84,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 
 ALTER TABLE `users`
-  MODIFY `ID` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

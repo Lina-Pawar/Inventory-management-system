@@ -4,7 +4,7 @@ from tkinter import ttk
 from PIL import ImageTk, Image
 import mysql.connector
 import pymysql
-
+toggle=True
 class User_Login:
     def __init__(self,root):
         self.root = root
@@ -20,6 +20,7 @@ class User_Login:
         self.regs_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_register.png"))
         self.pass_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_forgot_password.png"))
         self.titlebg=ImageTk.PhotoImage(Image.open("../IMS/icons/title.png"))
+        self.eye=ImageTk.PhotoImage(Image.open("../IMS/icons/eye.png"))
         self.user_name = StringVar()
         self.usr_pass = StringVar()
         self.usr_type = StringVar()
@@ -30,30 +31,23 @@ class User_Login:
         ims.place(x=520,y=130,width=680,height=100)
         self.login_frame = LabelFrame(self.root, text="LOGIN", bg = "white", font =("Times New Roman",22))
         self.login_frame.place(x = 400, y = 260, height = 350, width = 780)
-        
         login_type = Label(self.login_frame, text = "   Login as : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
-
-        self.login_as = ttk.Combobox(self.login_frame,textvariable = self.usr_type, font =("Times New Roman",18), width = 47,state = "readonly" , justify = "center")
+        self.login_as = ttk.Combobox(self.login_frame,textvariable = self.usr_type, font =("Times New Roman",18), width = 43,state = "readonly" , justify = "center")
         self.login_as['values']=("User","Admin")
         self.login_as.grid(row = 0, column = 1,padx = 10, pady = 15,sticky="w")
         self.login_as.current(0)
-
         login_id = Label(self.login_frame, text = " Username : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 1, column = 0,padx = 10, pady = 15,sticky="w")
-
-        self.login_iden = Entry(self.login_frame, textvariable = self.user_name,bd=3,width = 48,bg = "LightGray", font =("Times New Roman",18))
+        self.login_iden = Entry(self.login_frame, textvariable = self.user_name,bd=3,width = 45,bg = "LightGray", font =("Times New Roman",18))
         self.login_iden.grid(row = 1, column = 1,padx = 10, pady = 15,sticky="w")
-
         login_pass = Label(self.login_frame, text = "  Password : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 2, column = 0,padx = 10, pady = 15,sticky="w")
-
-        self.login_passen = Entry(self.login_frame,textvariable =self.usr_pass ,show="*",bd=3, width = 48,bg = "LightGray", font =("Times New Roman",18))
+        self.login_passen = Entry(self.login_frame,textvariable =self.usr_pass ,show="*",bd=3, width = 45,bg = "LightGray", font =("Times New Roman",18))
         self.login_passen.grid(row = 2, column = 1,padx = 10, pady = 15,sticky="w")
-
+        self.showpw = Button(self.login_frame, image=self.eye, font =("Impact",14),bd=2,bg="lightgray", command = self.show_pw)
+        self.showpw.place(x=670, y = 144, width = 33, height = 30)
         self.login_button = Button(self.login_frame, image=self.login_b, font =("Impact",14),bd=3,bg="red2", command = self.ureg_login)
         self.login_button.place(x=305, y = 230, width = 200, height = 50)
-
         self.forgot = Button(self.login_frame,image=self.pass_b,bg="tomato",fg="Blue",font =("Ar Delaney",16),bd=3, command = self.ureg_forgotpass)
         self.forgot.place(x=50, y = 230, width = 230, height = 50)
-
         self.register_button = Button(self.login_frame,image=self.regs_b, font =("Colonna MT",13),bd=3,bg="red2",fg="Blue", command= self.register)
         self.register_button.place(x=530, y =230, width = 200, height = 50)
         
@@ -85,6 +79,15 @@ class User_Login:
                 self.ans.delete(0,END)
                 self.password.delete(0,END)
     
+    def show_pw(self):
+        global toggle
+        if toggle:
+            self.login_passen.config(show="")
+            toggle=False
+        else:
+            self.login_passen.config(show="*")
+            toggle=True
+
     def ureg_login(self):
         if self.user_name.get() =="" or self.usr_pass.get() =="":
             messagebox.showerror("Error","All fields are mandatory",parent = self.root)
@@ -111,8 +114,8 @@ class User_Login:
                     self.user_name.set('')
                 else:
                     self.root.destroy()
-                    import buyer
-                    buyer.run_buyer(self.user_name.get())
+                    import user
+                    user.run_user(self.user_name.get())
                    
                 con.commit()
                 con.close()  

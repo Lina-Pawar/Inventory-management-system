@@ -20,4 +20,5 @@ Somethings to be kept in mind:
 1)First of all setup the xammp,php my admin in your pc and add the database their first by creatin the database with same name in local host and then import the downloaded sql file in it
 2)Download all packages mentioned above at start of all files
 3)Keep all files in single folder,save it
-4)Change the locataion directories of all image locations or it will throw error for tkinter traceback imagetk
+
+Then just double click login.py or run it through command prompt.
