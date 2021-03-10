@@ -58,7 +58,7 @@ class User_Register:
                 except Exception as es:
                     messagebox.showerror("Error",f"Error due to {es}",parent = self.root)
                 self.root.destroy()
-                import login                                     
+                import login                                  
 
 
         self.usrn_frame = LabelFrame(self.root, text ="REGISTER", padx = 10, pady = 10, font =("Arial",20),bg="White")
@@ -72,6 +72,8 @@ class User_Register:
         usrnew_contact = Label(self.usrn_frame, text = "Contact No.    : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 3, column = 0, padx = 10, pady = 10)
         self.usrnew_number = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.usrnew_number.grid(row = 3, column = 1, padx = 10, pady = 10)
+        self.usrnew_number.bind('<KeyPress>', self.num_validate)
+        
         usrnew_id = Label(self.usrn_frame, text = "E-mail id         : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 4, column = 0, padx = 10, pady = 10)
         self.usrnew_iden = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.usrnew_iden.grid(row = 4, column = 1, padx = 10, pady = 10)
@@ -98,6 +100,20 @@ class User_Register:
         self.login.place(x=120, y=590, height = 50, width = 250)
         self.back_btn = Button(self.root, text  = "<BACK", font =("Arial",18),bd=3,bg="White",fg="Red2", command= back)
         self.back_btn.place(x=0, y = 0, width = 150, height = 50)
+        
+    def num_validate(self,event):
+        if event.keysym == 'Tab':
+            return
+        if event.keysym == 'BackSpace':
+            return
+        widget = event.widget  
+        entry = widget.get()
+        x = widget.index(INSERT)
+        if not event.char.isdigit() or x > 9:
+            widget.bell()
+            return 'break'
+        else: 
+            widget.delete(x)   
         
 root = Tk()
 obj = User_Register(root)
