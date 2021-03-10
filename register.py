@@ -18,9 +18,6 @@ class User_Register:
         self.imslogo=ImageTk.PhotoImage(Image.open("../IMS/icons/logo2.png"))
         logo= Label(self.root,image=self.imslogo)
         logo.place(x=80,y=200,width=320,height=320)
-        def back():
-            self.root.destroy()
-            import login
 
         def login():
             self.root.destroy()
@@ -98,8 +95,6 @@ class User_Register:
         self.register.place(x=210, y=460, height = 50, width = 250)
         self.login = Button(self.root, image=self.login_b, command = login, font = ("Arial",18),bd=3,bg="red2")
         self.login.place(x=120, y=590, height = 50, width = 250)
-        self.back_btn = Button(self.root, text  = "<BACK", font =("Arial",18),bd=3,bg="White",fg="Red2", command= back)
-        self.back_btn.place(x=0, y = 0, width = 150, height = 50)
         
     def num_validate(self,event):
         if event.keysym == 'Tab':
