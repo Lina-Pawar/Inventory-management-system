@@ -166,16 +166,16 @@ class Bill_App:
         CPayEntry.grid(row=1,column=3,padx=10,pady=5)
 
         btn_F=Frame(F6,bd=3,bg="white",relief=GROOVE)
-        btn_F.place(x=730,width=596,height=50)
+        btn_F.place(x=725,width=420,height=50)
 
-        total_btn=Button(btn_F,image=self.ttotal,command=self.total,bg="red2",text="Total",fg="white",pady=12,width=162,height=30,bd=3)
-        total_btn.grid(row=0,column=0,padx=12,pady=2)
+        total_btn=Button(btn_F,image=self.ttotal,command=self.total,bg="red2",text="Total",fg="white",pady=6,width=100,height=30,bd=3)
+        total_btn.grid(row=0,column=0,padx=6,pady=2)
        
-        GBill_btn=Button(btn_F,image=self.Gen_bill,bg="red2",text="Generate Bill",fg="white",pady=12,width=169,height=30,bd=3)
-        GBill_btn.grid(row=0,column=1,padx=12,pady=2)
+        GBill_btn=Button(btn_F,image=self.Gen_bill,bg="red2",text="Generate Bill",fg="white",pady=6,width=150,height=30,bd=3)
+        GBill_btn.grid(row=0,column=1,padx=6,pady=2)
 
-        Clear_btn=Button(btn_F,image=self.Clear_b,command=self.clear,bg="red2",text="Clear",fg="white",pady=12,width=158,height=30,bd=3)
-        Clear_btn.grid(row=0,column=2,padx=12,pady=2)
+        Clear_btn=Button(btn_F,image=self.Clear_b,command=self.clear,bg="red2",text="Clear",fg="white",pady=6,width=100,height=30,bd=3)
+        Clear_btn.grid(row=0,column=2,padx=6,pady=2)
         
 
     def search_item(self):

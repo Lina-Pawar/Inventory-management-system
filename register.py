@@ -63,14 +63,15 @@ class User_Register:
         usrnew_1st = Label(self.usrn_frame, text = "First Name     : ",font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 1, column = 0, padx = 10, pady = 10)
         self.usrnew_1sten = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.usrnew_1sten.grid(row = 1, column = 1, padx = 10, pady = 10)
+        self.usrnew_1sten.bind('<KeyPress>', self.char_validate)
         usrnew_last = Label(self.usrn_frame, text = "Last Name     : ",font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 2, column = 0, padx = 10, pady = 10)
         self.usrnew_lasten = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.usrnew_lasten.grid(row = 2, column = 1, padx = 10, pady = 10)
+        self.usrnew_lasten.bind('<KeyPress>', self.char_validate)
         usrnew_contact = Label(self.usrn_frame, text = "Contact No.    : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 3, column = 0, padx = 10, pady = 10)
         self.usrnew_number = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.usrnew_number.grid(row = 3, column = 1, padx = 10, pady = 10)
-        self.usrnew_number.bind('<KeyPress>', self.num_validate)
-        
+        self.usrnew_number.bind('<KeyPress>', self.num_validate)        
         usrnew_id = Label(self.usrn_frame, text = "E-mail id         : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 4, column = 0, padx = 10, pady = 10)
         self.usrnew_iden = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.usrnew_iden.grid(row = 4, column = 1, padx = 10, pady = 10)
@@ -109,7 +110,21 @@ class User_Register:
             return 'break'
         else: 
             widget.delete(x)   
-        
+
+    def char_validate(self,event):
+        if event.keysym == 'Tab':
+            return
+        if event.keysym == 'BackSpace':
+            return
+        widget = event.widget  
+        entry = widget.get()
+        x = widget.index(INSERT)
+        if not event.char.isalpha():
+            widget.bell()
+            return 'break'
+        else: 
+            widget.delete(x)
+
 root = Tk()
 obj = User_Register(root)
 root.mainloop()

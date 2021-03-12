@@ -59,12 +59,14 @@ class Customer:
 
         self.txt_price=Entry(self.manage_frame,textvariable=self.product_price,font=("times new roman",16,"bold"),bd=5,relief=GROOVE)
         self.txt_price.grid(row=5,column=1,pady=10,padx=20,sticky="w")
+        self.txt_price.bind('<KeyPress>', self.num_validate)
         
         lbl_thres=Label(self.manage_frame,text="THRESHOLD :",bg="white",fg="black",font=("times new roman",16,"bold"))
         lbl_thres.grid(row=6,column=0,pady=10,padx=20,sticky="w")
 
         self.txt_threshold=Entry(self.manage_frame,textvariable=self.threshold,font=("times new roman",16,"bold"),bd=5,relief=GROOVE)
         self.txt_threshold.grid(row=6,column=1,pady=10,padx=20,sticky="w")
+        self.txt_threshold.bind('<KeyPress>', self.num_validate)
         
         self.search_b=ImageTk.PhotoImage(file="../IMS/icons/search.png")
         self.add_b=ImageTk.PhotoImage(file="../IMS/icons/add.png")
@@ -92,10 +94,10 @@ class Customer:
 
         self.txt_search=Entry(self.details_frame,width=15,textvariable=self.search_txt,font=("times new roman",16,"bold"),bd=5,relief=GROOVE)
         self.txt_search.grid(row=0,column=1,pady=10,padx=20,sticky="w")
-        search_btn=Button(self.details_frame,image=self.search_b,text="SEARCH",width=90,height=30,bd=3,bg="red2",command=self.search_data).grid(row=0,column=2,padx=10,pady=10)
-        showall_btn=Button(self.details_frame,image=self.show_b,width=90,height=30,bg="red2",bd=3,command=self.fetch_data).grid(row=0,column=3,padx=10,pady=10)
-        Exit_btn=Button(self.details_frame,image=self.exit_b,command=self.exit,width=40,height=40,bg="red2",bd=3).grid(row=0,column=4,padx=10,pady=10)
-        Sales_btn=Button(self.details_frame,image=self.sales,command=self.sale,width=40,height=40,bg="red2",bd=3).grid(row=0,column=5,padx=10,pady=10)
+        self.txt_search.bind('<KeyPress>', self.search_data)
+        showall_btn=Button(self.details_frame,image=self.show_b,width=90,height=30,bg="red2",bd=3,command=self.fetch_data).grid(row=0,column=2,padx=10,pady=10)
+        Exit_btn=Button(self.details_frame,image=self.exit_b,command=self.exit,width=40,height=40,bg="red2",bd=3).grid(row=0,column=3,padx=10,pady=10)
+        Sales_btn=Button(self.details_frame,image=self.sales,command=self.sale,width=40,height=40,bg="red2",bd=3).grid(row=0,column=4,padx=10,pady=10)
 
         self.table_frame=Frame(self.details_frame,bd=4,relief=RIDGE,bg="white")
         self.table_frame.place(x=20,y=70,width=800,height=540)
@@ -148,7 +150,6 @@ class Customer:
 
     
     def fetch_data(self): 
-        self.search_txt.set("")
         con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
         cur=con.cursor()
         cur.execute("SELECT * FROM inventory")
@@ -204,7 +205,7 @@ class Customer:
         self.clear()
     
     
-    def search_data(self): 
+    def search_data(self,event): 
         con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
         cur=con.cursor()
         statement=("SELECT * FROM inventory WHERE product_id LIKE '%"+self.search_txt.get()+"%' OR product_name LIKE '%"+self.search_txt.get()+"%'")
@@ -226,7 +227,7 @@ class Customer:
         widget = event.widget  
         entry = widget.get()
         x = widget.index(INSERT)
-        if not event.char.isdigit() or x > 2:
+        if not event.char.isdigit() or x > 4:
             widget.bell()
             return 'break'
         else: 
