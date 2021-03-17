@@ -22,7 +22,7 @@ class Bill_App:
         self.inventory_b=ImageTk.PhotoImage(file="../IMS/icons/inventory.png")
         self.exit_b=ImageTk.PhotoImage(file="../IMS/icons/exit.png")
         self.search_b=ImageTk.PhotoImage(file="../IMS/icons/search.png")
-        self.add_b=ImageTk.PhotoImage(file="../IMS/icons/addc.png")
+        self.add_b=ImageTk.PhotoImage(file="../IMS/icons/cart.png")
         self.mybills=ImageTk.PhotoImage(file="../IMS/icons/mybills.png")
         self.total_entry=DoubleVar()
         self.tax_entry=DoubleVar()
@@ -66,7 +66,7 @@ class Bill_App:
         uname_lbl=Label(F1,bg="red2",fg="white",text="Username:",font=("times new roman",18,"bold")).grid(row=0,column=2,padx=20,pady=5)
         uname_txt=Entry(F1,textvariable=self.username,width=20,font="arial 15",bd=3,relief=SUNKEN,state=DISABLED).grid(row=0,column=3,pady=2,padx=10)
 
-        bill_btn=Button(F1,image=self.mybills,width=113,height=25,bg="red2",text="Search",bd=3,font="arial 15 bold").grid(row=0,column=4,padx=20,pady=2)
+        bill_btn=Button(F1,image=self.mybills,command=self.show_bills,width=113,height=25,bg="red2",text="Search",bd=3,font="arial 15 bold").grid(row=0,column=4,padx=20,pady=2)
 
         F2=LabelFrame(self.root,bd=5,relief=GROOVE, text="Search Items",font=("times new roman",15,"bold"),fg="Black",bg="white")
         F2.place(x=20,y=170,width=330,height=450)
@@ -83,7 +83,7 @@ class Bill_App:
         F2A=LabelFrame(self.root,bd=5,relief=GROOVE,font=("times new roman",15,"bold"),bg="white")
         F2A.place(x=110,y=370,width=140,height=80)
 
-        btn_inventory=Button(F2A,image=self.inventory_b,command=self.Inventory,width=80,height=65,font=("Arial",7,"bold"),compound=TOP,pady=6,bg="red2",fg="black",bd=3).place(x=10,y=10,width=50,height=50)
+        btn_inventory=Button(F2A,image=self.inventory_b,command=self.Inventory_list,width=80,height=65,font=("Arial",7,"bold"),compound=TOP,pady=6,bg="red2",fg="black",bd=3).place(x=10,y=10,width=50,height=50)
         Exit_btn=Button(F2A,image=self.exit_b,command=self.exit,width=80,height=65,font=("Arial",7,"bold"),compound=TOP,pady=6,bg="red2",fg="black",bd=3).place(x=70,y=10,width=50,height=50)
 
         F3=LabelFrame(self.root,bd=5,relief=GROOVE, text="Item Details",font=("times new roman",15,"bold"),fg="Black",bg="white")
@@ -109,24 +109,24 @@ class Bill_App:
 
         scroll_x=Scrollbar(F4,orient=HORIZONTAL)
         scroll_y=Scrollbar(F4,orient=VERTICAL)
-        self.Stock_Table=ttk.Treeview(F4, column=("item_no","item_name","qty","price"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
+        self.inventory=ttk.Treeview(F4, column=("item_no","item_name","qty","price"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
 
         scroll_x.pack(side=BOTTOM,fill=X)
         scroll_y.pack(side=RIGHT,fill=Y)
-        scroll_x.config(command=self.Stock_Table.xview)
-        scroll_y.config(command=self.Stock_Table.yview)
+        scroll_x.config(command=self.inventory.xview)
+        scroll_y.config(command=self.inventory.yview)
 
-        self.Stock_Table.heading("item_no",text="Item No")
-        self.Stock_Table.heading("item_name",text="Item Name")
-        self.Stock_Table.heading("qty",text="Qty")
-        self.Stock_Table.heading("price",text="Price")
-        self.Stock_Table['show']='headings'
-        self.Stock_Table.column("item_no",width=30)
-        self.Stock_Table.column("item_name",width=140)
-        self.Stock_Table.column("qty",width=10)
-        self.Stock_Table.column("price",width=20)
-        self.Stock_Table.pack(fill=BOTH,expand=1)
-        self.Stock_Table.bind("<ButtonRelease-1>",self.table_click)
+        self.inventory.heading("item_no",text="Item No")
+        self.inventory.heading("item_name",text="Item Name")
+        self.inventory.heading("qty",text="Qty")
+        self.inventory.heading("price",text="Price")
+        self.inventory['show']='headings'
+        self.inventory.column("item_no",width=30)
+        self.inventory.column("item_name",width=140)
+        self.inventory.column("qty",width=10)
+        self.inventory.column("price",width=20)
+        self.inventory.pack(fill=BOTH,expand=1)
+        self.inventory.bind("<ButtonRelease-1>",self.table_click)
         style = ttk.Style()
         style.configure("Treeview", highlightthickness=0, bd=0, font=("Arial", 12))
         style.configure("Treeview.Heading", font=("Times new roman", 14, "bold"))
@@ -166,17 +166,17 @@ class Bill_App:
         CPayEntry.grid(row=1,column=3,padx=10,pady=5)
 
         btn_F=Frame(F6,bd=3,bg="white",relief=GROOVE)
-        btn_F.place(x=725,width=420,height=50)
+        btn_F.place(x=730,width=596,height=50)
 
-        total_btn=Button(btn_F,image=self.ttotal,command=self.total,bg="red2",text="Total",fg="white",pady=6,width=100,height=30,bd=3)
-        total_btn.grid(row=0,column=0,padx=6,pady=2)
+        total_btn=Button(btn_F,image=self.ttotal,command=self.total,bg="red2",text="Total",fg="white",pady=12,width=162,height=30,bd=3)
+        total_btn.grid(row=0,column=0,padx=12,pady=2)
        
-        GBill_btn=Button(btn_F,image=self.Gen_bill,bg="red2",text="Generate Bill",fg="white",pady=6,width=150,height=30,bd=3)
-        GBill_btn.grid(row=0,column=1,padx=6,pady=2)
+        GBill_btn=Button(btn_F,image=self.Gen_bill,command=self.generate_bill,bg="red2",text="Generate Bill",fg="white",pady=12,width=169,height=30,bd=3)
+        GBill_btn.grid(row=0,column=1,padx=12,pady=2)
 
-        Clear_btn=Button(btn_F,image=self.Clear_b,command=self.clear,bg="red2",text="Clear",fg="white",pady=6,width=100,height=30,bd=3)
-        Clear_btn.grid(row=0,column=2,padx=6,pady=2)
-        
+        Clear_btn=Button(btn_F,image=self.Clear_b,command=self.clear,bg="red2",text="Clear",fg="white",pady=12,width=158,height=30,bd=3)
+        Clear_btn.grid(row=0,column=2,padx=12,pady=2)
+        self.welcome_bill()
 
     def search_item(self):
         con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
@@ -204,12 +204,12 @@ class Bill_App:
             rows=cur.fetchall()
             available_quantity=rows[0][2]
 
-            listOfEntriesInTreeView=self.Stock_Table.get_children()
-            for each in listOfEntriesInTreeView:
+            cart_table=self.inventory.get_children()
+            for each in cart_table:
                 new_quantity=int(self.item_quantity.get())
                 if new_quantity<available_quantity or new_quantity==available_quantity:
                     new_item=(self.item_no.get(),self.item_name.get(),new_quantity,self.item_price.get()*new_quantity)
-                    self.Stock_Table.insert('',END, values=new_item)
+                    self.inventory.insert('',END, values=new_item)
                     return
                 else:
                     messagebox.showinfo("Alert","Available quantity is less.")
@@ -217,19 +217,56 @@ class Bill_App:
                     
             if int(self.item_quantity.get())<available_quantity or int(self.item_quantity.get())==available_quantity:
                 new_item=(self.item_no.get(),self.item_name.get(),self.item_quantity.get(),self.item_price.get()*self.item_quantity.get())
-                self.Stock_Table.insert('',END, values=new_item)
+                self.inventory.insert('',END, values=new_item)
         
             con.close()
         self.total()
         
         
+    def generate_bill(self):
+        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
+        cur=con.cursor()
+        items=""
+
+        if self.cart_items()==0:
+            messagebox.showinfo("Alert","Add items to cart!")
+        else:
+            self.total()
+            cart_table=self.inventory.get_children()
+            i=1
+            for each in cart_table:
+                if items!="":
+                    items=items+","
+                items=items+str(self.inventory.item(each)['values'][1])+"("+str(self.inventory.item(each)['values'][2])+")"
+                statement=f"UPDATE inventory SET product_qty=product_qty-{self.inventory.item(each)['values'][2]},sales=sales+{self.inventory.item(each)['values'][2]} WHERE product_id={self.inventory.item(each)['values'][0]}"
+                cur.execute(statement)
+                con.commit()
+                self.txtarea.insert(END,f"\n{i})\t {self.inventory.item(each)['values'][1]}\t         {self.inventory.item(each)['values'][2]}\t   {self.inventory.item(each)['values'][3]}")
+                self.inventory.detach(each)
+                i=i+1
+            self.txtarea.insert(END,f"\n=======================================")
+            self.txtarea.insert(END,f"\n\t     Subtotal Rs. {self.total_entry.get()}")
+            self.txtarea.insert(END,f"\n\t     Sales Tax Rs. {0.18*int(self.total_entry.get())}")
+            self.txtarea.insert(END,"\n---------------------------------------")
+            self.txtarea.insert(END,"\n------------AFTER DISCOUNT-------------")
+            self.txtarea.insert(END,f"\n\t\tTotal Rs.  {self.customer_pay.get()}")
+            self.txtarea.insert(END,"\n---------------------------------------")
+            self.txtarea.insert(END,"\n\n\n\n\n-----------Thanks for Shopping!!----------")
+            self.save_bill()
+            amount=self.customer_pay.get()
+            
+            cur.execute("INSERT INTO sales_bill VALUES(%s,%s,%s,%s,%s)",(self.bill_no.get(),self.username.get(),items,date.today().strftime("%d/%m/%Y"),amount))
+            con.commit()
+            con.close()
+            self.welcome_bill()
+            self.bill_no.set(int(random.randint(1000,9999)))
 
 
     def total(self):
         ftotal=0
-        listOfEntriesInTreeView=self.Stock_Table.get_children()
-        for each in listOfEntriesInTreeView:
-            ftotal=ftotal+int(self.Stock_Table.item(each)['values'][3])
+        cart_table=self.inventory.get_children()
+        for each in cart_table:
+            ftotal=ftotal+int(self.inventory.item(each)['values'][3])
         tax = 0.18*ftotal
         gtotal = ftotal + tax
         cust=gtotal-0.02*gtotal
@@ -239,18 +276,37 @@ class Bill_App:
         self.customer_pay.set(cust)
 
 
+    def save_bill(self):
+        self.bill_data=self.txtarea.get('1.0',END)
+        f=open("../IMS/Bill"+str(self.bill_no.get())+".txt","w")
+        f.write(self.bill_data)
+        f.close()
+        messagebox.showinfo("Saved",f"Bill No. :{(self.bill_no.get())} saved Successfully.")
+
+
+    def welcome_bill(self):
+        today=date.today().strftime("%d/%m/%Y")
+        self.txtarea.delete('1.0',END)
+        self.txtarea.insert(END,"\tWelcome to My Shop")
+        self.txtarea.insert(END,f"\n Bill Number: {self.bill_no.get()}")
+        self.txtarea.insert(END,f"\n Customer Name: {self.c_name.get()}")
+        self.txtarea.insert(END,f"\n Date: {today}")     
+        self.txtarea.insert(END,f"\n=======================================")
+        self.txtarea.insert(END,f"\nS.No  \tItem Name\t\t   Qty \tPrice")
+        self.txtarea.insert(END,f"\n=======================================")
+
 
     def cart_items(self):
-        listOfEntriesInTreeView=self.Stock_Table.get_children()
+        cart_table=self.inventory.get_children()
         i=0
-        for each in listOfEntriesInTreeView:
+        for each in cart_table:
             i=i+1
         return (i)
 
 
     def table_click(self,ev):
-        cursor_row=self.Stock_Table.focus()
-        contents=self.Stock_Table.item(cursor_row)
+        cursor_row=self.inventory.focus()
+        contents=self.inventory.item(cursor_row)
         row=contents['values']
         self.item_no.set(row[0])
         self.item_name.set(row[1])
@@ -259,7 +315,7 @@ class Bill_App:
 
 
     def clear(self):
-        self.Stock_Table.delete(*self.Stock_Table.get_children())
+        self.inventory.delete(*self.inventory.get_children())
         self.item_no.set("")
         self.item_name.set("")
         self.item_price.set(0)
@@ -269,11 +325,49 @@ class Bill_App:
         self.tax_entry.set("")
         self.grand_total.set("")
         self.customer_pay.set("")
+        self.welcome_bill()
+
+
+    def show_bills(self):
+        self.root3=Toplevel()
+        self.root3.geometry("720x420")
+
+        self.table_frame=Frame(self.root3,bd=4,relief=RIDGE,bg="ivory")
+        self.table_frame.place(x=10,y=10,width=700,height=400)
         
-
-
+        scroll_x=Scrollbar(self.table_frame,orient=HORIZONTAL)
+        scroll_y=Scrollbar(self.table_frame,orient=VERTICAL)
+        self.billtable=ttk.Treeview(self.table_frame,columns=("Bill No.","Items","Date","Amount"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
+        scroll_x.pack(side=BOTTOM,fill=X)
+        scroll_y.pack(side=RIGHT,fill=Y)
+        scroll_x.config(command=self.billtable.xview)
+        scroll_y.config(command=self.billtable.yview)
+        self.billtable.heading("Bill No.",text="Bill No.")
+        self.billtable.heading("Items",text="Items")
+        self.billtable.heading("Date",text="Date")
+        self.billtable.heading("Amount",text="Amount")
+        self.billtable['show']='headings'
+        self.billtable.column("Bill No.",width=30)
+        self.billtable.column("Items",width=200)
+        self.billtable.column("Date",width=50)
+        self.billtable.column("Amount",width=30)
+        self.billtable.pack(fill=BOTH,expand=1)
+        style = ttk.Style()
+        style.configure("Treeview", highlightthickness=0, bd=0, font=("Arial", 12))
+        style.configure("Treeview.Heading", font=("Times new roman", 14, "bold"))
+        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
+        cur=con.cursor()
+        cur.execute("SELECT bill_no,items,date,amount FROM sales_bill WHERE username=%s",self.username.get())
+        rows=cur.fetchall()
+        if len(rows)!=0:
+            self.billtable.delete(*self.billtable.get_children())
+            for row in rows:
+                self.billtable.insert('',END,values=row)
+                con.commit()
+        con.close()
     
-    def Inventory(self):
+    
+    def Inventory_list(self):
         self.root2=Toplevel()
         self.root2.geometry("480x470+10+200")
 
