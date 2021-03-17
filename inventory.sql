@@ -58,7 +58,7 @@ CREATE TABLE `sales_bill` (
   `username` varchar(50) NOT NULL,
   `items` varchar(200) NOT NULL,
   `date` varchar(10) CHARACTER SET latin1 NOT NULL,
-  `amount` int(5) NOT NULL
+  `amount` DOUBLE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Table structure for table `users`
