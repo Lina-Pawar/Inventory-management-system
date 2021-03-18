@@ -76,16 +76,27 @@ class Customer:
         self.show_b=ImageTk.PhotoImage(file="../IMS/icons/show.png")
         self.exit_b=ImageTk.PhotoImage(file="../IMS/icons/exit.png")
         self.sales=ImageTk.PhotoImage(file="../IMS/icons/inventory.png")
+        self.forecast_b=ImageTk.PhotoImage(file="../IMS/icons/forecast.png")
 
         
         self.btn_frame=Frame(self.manage_frame,bd=5,relief=GROOVE,bg="white")
-        self.btn_frame.place(x=65,y=450,width=465)
+        self.btn_frame.place(x=65,y=400,width=465)
 
         add_btn=Button(self.btn_frame,image=self.add_b,width=85,height=35,bg="red2",bd=3,command=self.add_product).grid(row=0,column=0,padx=10,pady=10)
         update_btn=Button(self.btn_frame,image=self.update_b,width=85,height=35,bg="red2",bd=3,command=self.update_data).grid(row=0,column=1,padx=10,pady=10)
         delete_btn=Button(self.btn_frame,image=self.delete_b,width=85,height=35,bg="red2",bd=3,command=self.delete_data).grid(row=0,column=2,padx=10,pady=10)
         clear_btn=Button(self.btn_frame,image=self.clear_b,width=85,height=35,bg="red2",bd=3,command=self.clear).grid(row=0,column=3,padx=10,pady=10)
-                  
+        
+        self.btn_frame=Frame(self.manage_frame,bd=5,relief=GROOVE,bg="white")
+        self.btn_frame.place(x=65,y=470,width=465)
+
+        Sales_btn=Button(self.btn_frame,image=self.sales,command=self.low_stock,width=40,height=40,bg="red2",bd=3).grid(row=0,column=0,padx=10,pady=5)
+        Sales_lbl=Label(self.btn_frame,text="Low stock",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=0,padx=10,pady=0)
+        forecast_btn= Button(self.btn_frame,image=self.forecast_b, width = 40, height= 40, bg="red2", bd=3, command= self.forecast_prod).grid(row=0, column=1, padx=10, pady= 5)
+        forecast_lbl=Label(self.btn_frame,text="Forecasting",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=1,padx=10,pady=0)
+        Exit_btn=Button(self.btn_frame,image=self.exit_b,command=self.exit,width=40,height=40,bg="red2",bd=3).grid(row=0,column=2,padx=10,pady=5)
+        Exit_lbl=Label(self.btn_frame,text="Logout",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=2,padx=10,pady=0)
+        
         self.details_frame=Frame(self.root,bd=5,relief=RIDGE,bg="white")
         self.details_frame.place(x=650,y=100,width=850,height=650)
         
@@ -96,9 +107,7 @@ class Customer:
         self.txt_search.grid(row=0,column=1,pady=10,padx=20,sticky="w")
         self.txt_search.bind('<KeyPress>', self.search_data)
         showall_btn=Button(self.details_frame,image=self.show_b,width=90,height=30,bg="red2",bd=3,command=self.fetch_data).grid(row=0,column=2,padx=10,pady=10)
-        Exit_btn=Button(self.details_frame,image=self.exit_b,command=self.exit,width=40,height=40,bg="red2",bd=3).grid(row=0,column=3,padx=10,pady=10)
-        Sales_btn=Button(self.details_frame,image=self.sales,command=self.sale,width=40,height=40,bg="red2",bd=3).grid(row=0,column=4,padx=10,pady=10)
-
+        
         self.table_frame=Frame(self.details_frame,bd=4,relief=RIDGE,bg="white")
         self.table_frame.place(x=20,y=70,width=800,height=540)
         scroll_x=Scrollbar(self.table_frame,orient=HORIZONTAL)
@@ -152,7 +161,7 @@ class Customer:
     def fetch_data(self): 
         con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
         cur=con.cursor()
-        cur.execute("SELECT * FROM inventory")
+        cur.execute("SELECT * FROM inventory ORDER BY product_id ASC")
         rows=cur.fetchall()
         if len(rows)!=0:
             self.invent_table.delete(*self.invent_table.get_children())
@@ -161,8 +170,17 @@ class Customer:
                 con.commit()
         con.close()
         
-    def sale(self):
-        print("")
+    def low_stock(self):
+        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
+        cur=con.cursor()
+        cur.execute("SELECT * from inventory where threshold>product_qty ORDER BY product_qty ASC;")
+        rows=cur.fetchall()
+        if len(rows)!=0:
+            self.invent_table.delete(*self.invent_table.get_children())
+            for row in rows:
+                self.invent_table.insert('',END,values=row)
+                con.commit()
+        con.close()
 
     def clear(self):
         self.product_id.set(str(random.randint(1000,9999)))
@@ -218,6 +236,9 @@ class Customer:
                 self.invent_table.insert('',END, values=row)
             con.commit()
         con.close()
+
+    def forecast_prod(self):
+        print("")
 
     def num_validate(self,event):
         if event.keysym == 'Tab':
