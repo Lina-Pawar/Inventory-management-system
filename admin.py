@@ -77,6 +77,7 @@ class Customer:
         self.exit_b=ImageTk.PhotoImage(file="../IMS/icons/exit.png")
         self.sales=ImageTk.PhotoImage(file="../IMS/icons/inventory.png")
         self.forecast_b=ImageTk.PhotoImage(file="../IMS/icons/forecast.png")
+        self.userdet_b=ImageTk.PhotoImage(file="../IMS/icons/user.png")
 
         
         self.btn_frame=Frame(self.manage_frame,bd=5,relief=GROOVE,bg="white")
@@ -94,8 +95,10 @@ class Customer:
         Sales_lbl=Label(self.btn_frame,text="Low stock",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=0,padx=10,pady=0)
         forecast_btn= Button(self.btn_frame,image=self.forecast_b, width = 40, height= 40, bg="red2", bd=3, command= self.forecast_prod).grid(row=0, column=1, padx=10, pady= 5)
         forecast_lbl=Label(self.btn_frame,text="Forecasting",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=1,padx=10,pady=0)
-        Exit_btn=Button(self.btn_frame,image=self.exit_b,command=self.exit,width=40,height=40,bg="red2",bd=3).grid(row=0,column=2,padx=10,pady=5)
-        Exit_lbl=Label(self.btn_frame,text="Logout",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=2,padx=10,pady=0)
+        userdet_btn=Button(self.btn_frame,image=self.userdet_b,command=self.user_detail,width=40,height=40,bg="red2",bd=3).grid(row=0,column=2,padx=10,pady=5)
+        userdet_lbl=Label(self.btn_frame,text="User details",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=2,padx=10,pady=0)
+        Exit_btn=Button(self.btn_frame,image=self.exit_b,command=self.exit,width=40,height=40,bg="red2",bd=3).grid(row=0,column=3,padx=10,pady=5)
+        Exit_lbl=Label(self.btn_frame,text="Logout",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=3,padx=10,pady=0)
         
         self.details_frame=Frame(self.root,bd=5,relief=RIDGE,bg="white")
         self.details_frame.place(x=650,y=100,width=850,height=650)
@@ -133,7 +136,7 @@ class Customer:
         self.invent_table.column("PRICE",width=50)
         self.invent_table.column("THRESHOLD",width=70)
         self.invent_table.column("SALES",width=40)
-
+ 
         self.invent_table.pack(fill=BOTH,expand=1)
         self.invent_table.bind("<ButtonRelease-1>",self.get_cursor)
         
@@ -239,7 +242,115 @@ class Customer:
 
     def forecast_prod(self):
         print("")
+    
+    def user_detail(self):
+        #print("")
+        
+        self.root2 = Toplevel()
+        self.root2.title("Inventory Management")
+        self.root2.geometry("1600x800+0+0")
+        self.root2.iconbitmap('../IMS/icons/Iconinv.ico')
+        title2=Label(self.root2,text="Inventory Management System",bd=5,relief=SOLID,fg="white",bg="red2",font=("times new roman",40,"bold"))
+        title2.pack(side=TOP,fill=X)
+        self.bg1= ImageTk.PhotoImage(Image.open("../IMS/icons/bg.jpg"))
+        bg1= Label(self.root2,image=self.bg1)
+        bg1.place(x=0,y=72,relwidth=1,relheight=1)
 
+        self.userdet_frame=Frame(self.root2,bd=5,relief=RIDGE,bg="white")
+        self.userdet_frame.place(x=30,y=100,width=750,height=650)
+        ud_title=Label(self.userdet_frame,text="USER DETAILS",bg="red2",fg="white",font=("times new roman",20,"bold"))
+        ud_title.place(x=0,y=0,width=740,height=50)
+
+        self.table_frame4=Frame(self.userdet_frame,bd=4,relief=RIDGE,bg="white")
+        self.table_frame4.place(x=20,y=70,width=730,height=540)
+        scroll_x=Scrollbar(self.table_frame4,orient=HORIZONTAL)
+        scroll_y=Scrollbar(self.table_frame4,orient=VERTICAL)
+        self.udetail_table=ttk.Treeview(self.table_frame4,columns=("ID","FIRST NAME","LAST NAME","CONTACT NO.","MAIL ID","USERNAME"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
+        scroll_x.pack(side=BOTTOM,fill=X)
+        scroll_y.pack(side=RIGHT,fill=Y)
+        scroll_x.config(command=self.udetail_table.xview)
+        scroll_y.config(command=self.udetail_table.yview)
+        style = ttk.Style()
+        style.configure("Treeview", highlightthickness=0, bd=0, font=("Arial", 13))
+        style.configure("Treeview.Heading", font=("Times new roman", 15, "bold"))
+        self.udetail_table.heading("ID",text="ID")
+        self.udetail_table.heading("FIRST NAME",text="FIRST NAME")
+        self.udetail_table.heading("LAST NAME",text="LAST NAME")
+        self.udetail_table.heading("CONTACT NO.",text="CONTACT NO.")
+        self.udetail_table.heading("MAIL ID",text="MAIL ID")
+        self.udetail_table.heading("USERNAME",text="USERNAME")
+        self.udetail_table['show']='headings'
+        self.udetail_table.column("ID",width=40)
+        self.udetail_table.column("FIRST NAME",width=130)
+        self.udetail_table.column("LAST NAME",width=130)
+        self.udetail_table.column("CONTACT NO.",width=85)
+        self.udetail_table.column("MAIL ID",width=100)
+        self.udetail_table.column("USERNAME",width=110)
+        self.udetail_table.pack(fill=BOTH,expand=1)
+        
+        self.udetail_table.bind("<ButtonRelease-1>",self.show_bills)
+        
+        self.fetch_userdata()
+
+        self.table2_frame=Frame(self.root2,bd=5,relief=RIDGE,bg="white")
+        self.table2_frame.place(x=800,y=100,width=720,height=650)
+        bd_title=Label(self.table2_frame,text="ORDER DETAILS",bg="red2",fg="white",font=("times new roman",20,"bold"))
+        bd_title.place(x=0,y=0,width=710,height=50)
+        self.bill_frame=Frame(self.table2_frame,bd=4,relief=RIDGE,bg="ivory")
+        self.bill_frame.place(x=20,y=70,width=680,height=540)
+        scroll_x=Scrollbar(self.bill_frame,orient=HORIZONTAL)
+        scroll_y=Scrollbar(self.bill_frame,orient=VERTICAL)
+        self.billtable=ttk.Treeview(self.bill_frame,columns=("Bill No.","Items","Date","Amount"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
+        scroll_x.pack(side=BOTTOM,fill=X)
+        scroll_y.pack(side=RIGHT,fill=Y)
+        scroll_x.config(command=self.billtable.xview)
+        scroll_y.config(command=self.billtable.yview)
+        self.billtable.heading("Bill No.",text="Bill No.")
+        self.billtable.heading("Items",text="Items")
+        self.billtable.heading("Date",text="Date")
+        self.billtable.heading("Amount",text="Amount")
+        self.billtable['show']='headings'
+        self.billtable.column("Bill No.",width=30)
+        self.billtable.column("Items",width=200)
+        self.billtable.column("Date",width=50)
+        self.billtable.column("Amount",width=30)
+        self.billtable.pack(fill=BOTH,expand=1)
+        style = ttk.Style()
+        style.configure("Treeview", highlightthickness=0, bd=0, font=("Arial", 12))
+        style.configure("Treeview.Heading", font=("Times new roman", 14, "bold"))
+
+        
+
+    def fetch_userdata(self):
+        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
+        cur=con.cursor()
+        cur.execute("SELECT ID,f_name,l_name,contact,mail_id,username FROM users ORDER BY ID ASC;")
+        rows=cur.fetchall()
+        if len(rows)!=0:
+            self.udetail_table.delete(*self.udetail_table.get_children())
+            for row in rows:
+                self.udetail_table.insert('',END,values=row)
+                con.commit()
+        con.close()
+
+    def show_bills(self,ev):
+        
+        cursor_row2=self.udetail_table.focus()
+        content2=self.udetail_table.item(cursor_row2)
+        uname=content2['values'][5]
+        
+        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
+        cur=con.cursor()
+        cur.execute("SELECT bill_no,items,date,amount FROM sales_bill WHERE username=%s",uname)
+        rows=cur.fetchall()
+        if len(rows)!=0:
+            self.billtable.delete(*self.billtable.get_children())
+            for row in rows:
+                self.billtable.insert('',END,values=row)
+                con.commit()
+        con.close()
+
+    
     def num_validate(self,event):
         if event.keysym == 'Tab':
             return

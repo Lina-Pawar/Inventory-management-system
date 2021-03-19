@@ -1,0 +1,21 @@
+	Welcome to My Shop
+ Bill Number: 5989
+ Customer Name: Lina Pawar
+ Date: 19/03/2021
+=======================================
+S.No  	Item Name		   Qty 	Price
+=======================================
+1)	 Tennis racket	         2	   2200
+2)	 Soft-tennis-ball	         2	   60
+=======================================
+	     Subtotal Rs. 2260.0
+	     Sales Tax Rs. 406.8
+---------------------------------------
+------------AFTER DISCOUNT-------------
+		Total Rs.  2613.4640000000004
+---------------------------------------
+
+
+
+
+-----------Thanks for Shopping!!----------
