@@ -3,18 +3,19 @@ from tkinter import messagebox
 from tkinter import ttk
 from PIL import ImageTk, Image
 import mysql.connector
+import pymysql
+import re
 
 class User_Register:
     def __init__(self,root):
         self.root = root
         self.root.title('Inventory Management')
         self.root.geometry("1600x800+0+0")
-        self.root.iconbitmap('../IMS/icons/Iconinv.ico')
         self.bg= ImageTk.PhotoImage(Image.open("../IMS/icons/bgregister.png"))
         bg= Label(self.root,image=self.bg)
         bg.place(x=0,y=0,relwidth=1,relheight=1)
-        self.login_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_login.png"))
-        self.regs_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_register.png"))
+        self.login_b=ImageTk.PhotoImage(Image.open("../IMS/icons/login.png"))
+        self.regs_b=ImageTk.PhotoImage(Image.open("../IMS/icons/register.png"))
         self.imslogo=ImageTk.PhotoImage(Image.open("../IMS/icons/logo2.png"))
         logo= Label(self.root,image=self.imslogo)
         logo.place(x=80,y=200,width=320,height=320)
@@ -23,11 +24,24 @@ class User_Register:
             self.root.destroy()
             import login
 
-        def unew_login():
-            if self.fname.get() =="" or self.lname.get()=="" or self.mail.get()=="" or self.ans.get()=="" or self.password.get()=="" or self.usrnew_passcnen.get()=="" or self.username.get()=="":
+        def register():
+            conn = pymysql.connect(host="localhost",user="root",passwd="root",database="ims")
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM USERS WHERE username = %s",(self.username.get()))
+            row = cur.fetchone()
+            conn.commit()
+            conn.close()
+            regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+            if row!=None:
+                messagebox.showerror("Error","Username taken!",parent = self.root)
+            elif self.fname.get() =="" or self.lname.get()=="" or self.mail.get()=="" or self.ans.get()=="" or self.password.get()=="" or self.usrnew_passcnen.get()=="" or self.username.get()=="":
                 messagebox.showerror("Error","All fields are mandatory",parent = self.root)
             elif self.password.get() != self.usrnew_passcnen.get():
                 messagebox.showerror("Error","Password does not match",parent = self.root)
+            elif not (re.search(regex,self.mail.get())):
+                messagebox.showerror("Error","Invalid email id!",parent = self.root)
+            elif int(self.contact.get())<1000000000:
+                messagebox.showerror("Error","Invalid contact number!",parent = self.root)
             else:
                 try:
                     con = mysql.connector.connect(host="localhost",user="root",passwd="root",database="ims")
@@ -38,8 +52,8 @@ class User_Register:
                         if self.mail.get() == mail_id:
                             messagebox.showerror("Error","User already exists",parent = self.root)
                         else:
-                            login_insert = "INSERT INTO users (f_name , l_name, contact, mail_id , que , answer , password, username) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                            keys = (self.fname.get(),
+                            st = "INSERT INTO users (f_name , l_name, contact, mail_id , que , answer , password, username) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                            vals = (self.fname.get(),
                                     self.lname.get(),
                                     self.contact.get(),
                                     self.mail.get(),
@@ -48,7 +62,7 @@ class User_Register:
                                     self.password.get(),
                                     self.username.get()
                                     )
-                            cur.execute(login_insert,keys)
+                            cur.execute(st,vals)
                             con.commit()
                             con.close()
                             messagebox.showinfo("Success","Registration successful",parent = self.root)
@@ -92,8 +106,8 @@ class User_Register:
         usrnew_uname = Label(self.usrn_frame, text = "Username      : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 9, column = 0, padx = 10, pady = 10)
         self.username = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.username.grid(row = 9, column = 1, padx = 10, pady = 10)
-        self.register = Button (self.usrn_frame, image=self.regs_b, command = unew_login, font = ("Arial",18),bd=3,bg="red2")
-        self.register.place(x=210, y=460, height = 50, width = 250)
+        self.register_btn = Button (self.usrn_frame, image=self.regs_b, command = register, font = ("Arial",18),bd=3,bg="red2")
+        self.register_btn.place(x=210, y=460, height = 50, width = 250)
         self.login = Button(self.root, image=self.login_b, command = login, font = ("Arial",18),bd=3,bg="red2")
         self.login.place(x=120, y=590, height = 50, width = 250)
         
