@@ -127,7 +127,7 @@ class User_Login:
         self.root2.grab_set()
         bgupdate= Label(self.root2,image=self.bg)
         bgupdate.place(x=0,y=0,relwidth=1,relheight=1)
-        self.update_btn=ImageTk.PhotoImage(Image.open("../IMS/icons/button_update_pw.png"))
+        self.update_btn=ImageTk.PhotoImage(Image.open("../IMS/icons/update_pw.png"))
         self.email_id= StringVar()
         self.question=StringVar()
         self.answer= StringVar()
