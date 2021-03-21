@@ -99,7 +99,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `f_name`, `l_name`, `contact`, `mail_id`, `que`, `answer`, `password`, `username`) VALUES
-(1, 'Lina', 'Pawar', 9970749700, 'lpawar@gmail.com', 'Your favourite movie', 'Resident evil', '2911', 'lina')
+(1, 'Lina', 'Pawar', 9970749700, 'lpawar@gmail.com', 'Your favourite movie', 'Resident evil', '2911', 'lina');
 
 --
 -- Indexes for table `users`
