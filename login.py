@@ -16,9 +16,9 @@ class User_Login:
         self.bg= ImageTk.PhotoImage(Image.open("../IMS/icons/bg.jpg"))
         bg= Label(self.root,image=self.bg)
         bg.place(x=0,y=0,relwidth=1,relheight=1)
-        self.login_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_login.png"))
-        self.regs_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_register.png"))
-        self.pass_b=ImageTk.PhotoImage(Image.open("../IMS/icons/button_forgot_password.png"))
+        self.login_b=ImageTk.PhotoImage(Image.open("../IMS/icons/login.png"))
+        self.regs_b=ImageTk.PhotoImage(Image.open("../IMS/icons/register.png"))
+        self.pass_b=ImageTk.PhotoImage(Image.open("../IMS/icons/forgot_password.png"))
         self.titlebg=ImageTk.PhotoImage(Image.open("../IMS/icons/title.png"))
         self.eye=ImageTk.PhotoImage(Image.open("../IMS/icons/eye.png"))
         self.user_name = StringVar()
@@ -69,7 +69,6 @@ class User_Login:
                     messagebox.showinfo("Success","Password changed successfully!",parent = self.root2)
                     self.root.destroy()
                     import login
-                    con.commit()
 
                 con.commit()
                 con.close()
