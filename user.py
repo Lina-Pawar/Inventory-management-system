@@ -272,7 +272,7 @@ class Bill_App:
         self.total_entry.set(ftotal)
         self.tax_entry.set(tax)
         self.grand_total.set(gtotal)
-        self.customer_pay.set(cust)
+        self.customer_pay.set(format(cust, ".2f"))
 
 
     def welcome_bill(self):

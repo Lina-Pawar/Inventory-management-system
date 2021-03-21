@@ -108,10 +108,6 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`ID`);
 
 --
--- AUTO_INCREMENT for dumped tables
---
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
