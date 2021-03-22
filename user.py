@@ -270,7 +270,7 @@ class Bill_App:
         gtotal = ftotal + tax
         cust=gtotal-0.02*gtotal
         self.total_entry.set(ftotal)
-        self.tax_entry.set(tax)
+        self.tax_entry.set(format(tax, ".2f"))
         self.grand_total.set(gtotal)
         self.customer_pay.set(format(cust, ".2f"))
 
