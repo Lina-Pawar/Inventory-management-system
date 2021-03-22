@@ -42,25 +42,25 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`product_id`, `product_name`, `product_qty`, `product_price`, `threshold`, `sales`) VALUES
-(7714, 'Football', 49, 300, 10, 0),
-(7920, 'Handball', 30, 200, 10, 4),
-(4481, 'Volleyball', 25, 450, 10, 20),
-(9050, 'Basketball', 23, 500, 10, 10),
-(7648, 'Soft-tennis-ball', 89, 30, 10, 1),
-(1352, 'Hard-tennis-ball', 34, 50, 10, 7),
-(6857, 'Puck', 5, 100, 10, 15),
-(5395, 'Pingpong ball', 9, 25, 10, 10),
-(1062, 'Red season ball', 12, 200, 10, 2),
-(2446, 'White season ball', 20, 250, 10, 0),
-(5368, 'Shuttle cock', 50, 80, 12, 0),
-(8950, 'English willow bat', 35, 1000, 5, 0),
-(2466, 'Kashmir willow bat', 48, 1500, 5, 0),
-(8667, 'Rackets', 48, 450, 10, 2),
-(8351, 'Net', 37, 300, 8, 0),
-(2390, 'Cricket kit', 27, 3000, 10, 3),
-(9796, 'Supporter', 16, 150, 10, 2),
-(2075, 'Spikes', 20, 800, 5, 0),
-(4606, 'Skipping rope', 49, 140, 5, 1);
+(7714, 'Football', 49, 300, 10),
+(7920, 'Handball', 30, 200, 10),
+(4481, 'Volleyball', 25, 450, 10),
+(9050, 'Basketball', 23, 500, 10),
+(7648, 'Soft-tennis-ball', 89, 30, 10),
+(1352, 'Hard-tennis-ball', 34, 50, 10),
+(6857, 'Puck', 5, 100, 10),
+(5395, 'Pingpong ball', 9, 25, 10),
+(1062, 'Red season ball', 12, 200, 10),
+(2446, 'White season ball', 20, 250, 10),
+(5368, 'Shuttle cock', 50, 80, 12),
+(8950, 'English willow bat', 35, 1000, 5),
+(2466, 'Kashmir willow bat', 48, 1500, 5),
+(8667, 'Rackets', 48, 450, 10),
+(8351, 'Net', 37, 300, 8),
+(2390, 'Cricket kit', 27, 3000, 10),
+(9796, 'Supporter', 16, 150, 10),
+(2075, 'Spikes', 20, 800, 5),
+(4606, 'Skipping rope', 49, 140, 5);
 
 -- --------------------------------------------------------
 
