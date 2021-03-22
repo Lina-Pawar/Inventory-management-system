@@ -41,7 +41,7 @@ CREATE TABLE `inventory` (
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`product_id`, `product_name`, `product_qty`, `product_price`, `threshold`, `sales`) VALUES
+INSERT INTO `inventory` (`product_id`, `product_name`, `product_qty`, `product_price`, `threshold`) VALUES
 (7714, 'Football', 49, 300, 10),
 (7920, 'Handball', 30, 200, 10),
 (4481, 'Volleyball', 25, 450, 10),
