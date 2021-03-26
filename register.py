@@ -66,13 +66,12 @@ class User_Register:
         usrnew_uname = Label(self.usrn_frame, text = "Username      : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 9, column = 0, padx = 10, pady = 10)
         self.username = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.username.grid(row = 9, column = 1, padx = 10, pady = 10)
-        self.register_btn = Button (self.usrn_frame, image=self.regs_b, font = ("Arial",18),bd=3,bg="red2")
+        self.register_btn = Button (self.usrn_frame, image=self.regs_b,command=self.register, font = ("Arial",18),bd=3,bg="red2")
         self.register_btn.place(x=210, y=460, height = 50, width = 250)
-        self.register_btn.bind('<ButtonRelease-1>',self.register)
         self.login = Button(self.root, image=self.login_b, command = login, font = ("Arial",18),bd=3,bg="red2")
         self.login.place(x=120, y=590, height = 50, width = 250)
 
-    def register(self,event):
+    def register(self):
         conn = pymysql.connect(host="localhost",user="root",passwd="root",database="ims")
         cur = conn.cursor()
         cur.execute("SELECT * FROM USERS WHERE username = %s",(self.username.get()))
