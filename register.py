@@ -72,7 +72,7 @@ class User_Register:
         self.login = Button(self.root, image=self.login_b, command = login, font = ("Arial",18),bd=3,bg="red2")
         self.login.place(x=120, y=590, height = 50, width = 250)
 
-    def register(self,event):
+    def register(self):
         conn = pymysql.connect(host="localhost",user="root",passwd="root",database="ims")
         cur = conn.cursor()
         cur.execute("SELECT * FROM USERS WHERE username = %s",(self.username.get()))
