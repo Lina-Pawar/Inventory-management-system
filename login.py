@@ -31,7 +31,7 @@ class User_Login:
         ims.place(x=520,y=130,width=680,height=100)
         self.login_frame = LabelFrame(self.root, text="LOGIN", bg = "white", font =("Times New Roman",22))
         self.login_frame.place(x = 400, y = 260, height = 350, width = 780)
-        login_type = Label(self.login_frame, text = "   Login as : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
+        login_type = Label(self.login_frame, text = "  Login as :  ",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
         self.login_as = ttk.Combobox(self.login_frame,textvariable = self.usr_type, font =("Times New Roman",18), width = 43,state = "readonly" , justify = "center")
         self.login_as['values']=("User","Admin")
         self.login_as.grid(row = 0, column = 1,padx = 10, pady = 15,sticky="w")
@@ -67,8 +67,7 @@ class User_Login:
                     value = (self.password.get(),self.mail.get())
                     cur.execute(update,value)
                     messagebox.showinfo("Success","Password changed successfully!",parent = self.root2)
-                    self.root.destroy()
-                    import login
+                    self.root2.destroy()
 
                 con.commit()
                 con.close()
@@ -141,36 +140,27 @@ class User_Login:
         self.root2_frame.place(x = 400, y = 260, height = 380, width = 780)
 
         usrnew_id = Label(self.root2_frame, text = "         Email id       :",bg = "tomato", font =("Times New Roman",18)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
-
         self.mail = Entry(self.root2_frame, textvariable = self.email_id,bd=3,width = 43,bg = "LightGray", font =("Times New Roman",18))
         self.mail.grid(row = 0, column = 1,padx = 10, pady = 15,sticky="w")
-        
         security = Label(self.root2_frame, text = " Security question :",bg = "tomato", font =("Times New Roman",18)).grid(row = 1, column = 0,padx = 10, pady = 15,sticky="w")
-
         self.ques = ttk.Combobox(self.root2_frame,textvariable = self.question, font =("Times New Roman",18), width = 41,state = "readonly" , justify = "center")
         self.ques['values']=("Select","Your favourite book","Your favourite movie","Your best friend")
         self.ques.grid(row = 1, column = 1,padx = 10, pady = 15,sticky="w")
         self.ques.current(0)
-
         answer = Label(self.root2_frame, text = "        Answer         :",bg = "tomato", font =("Times New Roman",18)).grid(row = 2, column = 0,padx = 10, pady = 15,sticky="w")
-
         self.ans = Entry(self.root2_frame, textvariable = self.answer,bd=3,width = 43,bg = "LightGray", font =("Times New Roman",18))
         self.ans.grid(row = 2, column = 1,padx = 10, pady = 15,sticky="w")
-
         usrnew_pass = Label(self.root2_frame, text = "   New Password   :",bg = "tomato", font =("Times New Roman",18)).grid(row = 3, column = 0,padx = 10, pady = 15,sticky="w")
-
         self.password = Entry(self.root2_frame, textvariable = self.new_pass,bd=3,width = 43,bg = "LightGray", font =("Times New Roman",18))
         self.password.grid(row = 3, column = 1,padx = 10, pady = 15,sticky="w")
-        
         self.new_pass = Button(self.root2_frame, image=self.update_btn,bd=3,bg="red2", command = self.new_password)
         self.new_pass.place(x=305, y = 280, width = 200, height = 42)
-
         self.back_btn = Button(self.root2, text  = "<BACK", font =("Arial",18),bd=3,bg="White",fg="Red", command= self.back)
         self.back_btn.place(x=0, y = 0, width = 150, height = 50)
           
     def back(self):
-        self.root.destroy()
-        import login
+        self.root2.destroy()
+        
     def register(self):
         self.root.destroy()
         import register

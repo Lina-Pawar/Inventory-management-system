@@ -17,60 +17,14 @@ class User_Register:
         self.login_b=ImageTk.PhotoImage(Image.open("../IMS/icons/login.png"))
         self.regs_b=ImageTk.PhotoImage(Image.open("../IMS/icons/register.png"))
         self.imslogo=ImageTk.PhotoImage(Image.open("../IMS/icons/logo2.png"))
+        self.tick=ImageTk.PhotoImage(Image.open("../IMS/icons/tick.png"))
+        self.cross=ImageTk.PhotoImage(Image.open("../IMS/icons/cross.png"))
         logo= Label(self.root,image=self.imslogo)
         logo.place(x=80,y=200,width=320,height=320)
 
         def login():
             self.root.destroy()
             import login
-
-        def register():
-            conn = pymysql.connect(host="localhost",user="root",passwd="root",database="ims")
-            cur = conn.cursor()
-            cur.execute("SELECT * FROM USERS WHERE username = %s",(self.username.get()))
-            row = cur.fetchone()
-            conn.commit()
-            conn.close()
-            regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-            if row!=None:
-                messagebox.showerror("Error","Username taken!",parent = self.root)
-            elif self.fname.get() =="" or self.lname.get()=="" or self.mail.get()=="" or self.ans.get()=="" or self.password.get()=="" or self.usrnew_passcnen.get()=="" or self.username.get()=="":
-                messagebox.showerror("Error","All fields are mandatory",parent = self.root)
-            elif self.password.get() != self.usrnew_passcnen.get():
-                messagebox.showerror("Error","Password does not match",parent = self.root)
-            elif not (re.search(regex,self.mail.get())):
-                messagebox.showerror("Error","Invalid email id!",parent = self.root)
-            elif int(self.contact.get())<1000000000:
-                messagebox.showerror("Error","Invalid contact number!",parent = self.root)
-            else:
-                try:
-                    con = mysql.connector.connect(host="localhost",user="root",passwd="root",database="ims")
-                    cur = con.cursor(buffered=True)
-                    select = "SELECT mail_id FROM USERS"
-                    cur.execute(select)
-                    for (mail_id) in cur:
-                        if self.mail.get() == mail_id:
-                            messagebox.showerror("Error","User already exists",parent = self.root)
-                        else:
-                            st = "INSERT INTO users (f_name , l_name, contact, mail_id , que , answer , password, username) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                            vals = (self.fname.get(),
-                                    self.lname.get(),
-                                    self.contact.get(),
-                                    self.mail.get(),
-                                    self.ques.get(),
-                                    self.ans.get(),
-                                    self.password.get(),
-                                    self.username.get()
-                                    )
-                            cur.execute(st,vals)
-                            con.commit()
-                            con.close()
-                            messagebox.showinfo("Success","Registration successful",parent = self.root)
-                except Exception as es:
-                    messagebox.showerror("Error",f"Error due to {es}",parent = self.root)
-                self.root.destroy()
-                import login                                  
-
 
         self.usrn_frame = LabelFrame(self.root, text ="REGISTER", padx = 10, pady = 10, font =("Arial",20),bg="White")
         self.usrn_frame.place(x=650, y=85, height = 580, width = 700)
@@ -85,10 +39,16 @@ class User_Register:
         usrnew_contact = Label(self.usrn_frame, text = "Contact No.    : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 3, column = 0, padx = 10, pady = 10)
         self.contact = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.contact.grid(row = 3, column = 1, padx = 10, pady = 10)
-        self.contact.bind('<KeyPress>', self.num_validate)        
+        self.contact.bind('<KeyPress>', self.num_validate)
+        self.contact.bind('<FocusOut>',self.num_check)
+        self.cvalid = Label(self.root,bg="white")
+        self.cvalid.place(x=1305,y=240,width=30,height=28)
         usrnew_id = Label(self.usrn_frame, text = "E-mail id         : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 4, column = 0, padx = 10, pady = 10)
         self.mail = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.mail.grid(row = 4, column = 1, padx = 10, pady = 10)
+        self.mail.bind('<FocusOut>',self.mail_check)
+        self.mvalid = Label(self.root,bg="white")
+        self.mvalid.place(x=1305,y=290,width=30,height=28)
         security = Label(self.usrn_frame, text = "Security Ques : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 5, column = 0, padx = 10, pady = 10)
         self.ques = ttk.Combobox(self.usrn_frame, font =("Arial",16), state = "readonly" , width = 39, justify = "center")
         self.ques['values']=("Select","Your favourite book","Your favourite movie","Your best friend")
@@ -106,13 +66,55 @@ class User_Register:
         usrnew_uname = Label(self.usrn_frame, text = "Username      : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 9, column = 0, padx = 10, pady = 10)
         self.username = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.username.grid(row = 9, column = 1, padx = 10, pady = 10)
-        self.register_btn = Button (self.usrn_frame, image=self.regs_b, command = register, font = ("Arial",18),bd=3,bg="red2")
+        self.register_btn = Button (self.usrn_frame, image=self.regs_b, font = ("Arial",18),bd=3,bg="red2")
         self.register_btn.place(x=210, y=460, height = 50, width = 250)
+        self.register_btn.bind('<ButtonRelease-1>',self.register)
         self.login = Button(self.root, image=self.login_b, command = login, font = ("Arial",18),bd=3,bg="red2")
         self.login.place(x=120, y=590, height = 50, width = 250)
-        
+
+    def register(self,event):
+        conn = pymysql.connect(host="localhost",user="root",passwd="root",database="ims")
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM USERS WHERE username = %s",(self.username.get()))
+        row = cur.fetchone()
+        conn.commit()
+        conn.close()
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        if row!=None:
+            messagebox.showerror("Error","Username taken!",parent = self.root)
+        elif int(self.contact.get())<1000000000:
+            messagebox.showerror("Error","Contact number must have 10 digits!",parent = self.root)
+        elif not (re.search(regex,self.mail.get())):
+            messagebox.showerror("Error","Invalid email id!",parent = self.root)
+        elif self.password.get() != self.usrnew_passcnen.get():
+            messagebox.showerror("Error","Passwords do not match!",parent = self.root)
+        elif self.fname.get() =="" or self.lname.get()=="" or self.mail.get()=="" or self.ans.get()=="" or self.password.get()=="" or self.usrnew_passcnen.get()=="" or self.username.get()=="":
+            messagebox.showerror("Error","All fields are mandatory",parent = self.root)
+        else:
+            try:
+                con = mysql.connector.connect(host="localhost",user="root",passwd="root",database="ims")
+                cur = con.cursor(buffered=True)
+                select = "SELECT mail_id FROM USERS"
+                cur.execute(select)
+                for (mail_id) in cur:
+                    if self.mail.get() == mail_id:
+                        messagebox.showerror("Error","User already exists!",parent = self.root)
+                    else:
+                        st = "INSERT INTO users (f_name , l_name, contact, mail_id , que , answer , password, username) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                        vals = (self.fname.get(),self.lname.get(),self.contact.get(),self.mail.get(),self.ques.get(),self.ans.get(),self.password.get(),self.username.get())
+                        cur.execute(st,vals)
+                        con.commit()
+                        con.close()
+                        messagebox.showinfo("Success","Registration successful",parent = self.root)
+            except Exception as es:
+                messagebox.showerror("Error",f"Error due to {es}",parent = self.root)
+            self.root.destroy()
+            import login 
+
     def num_validate(self,event):
         if event.keysym == 'Tab':
+            return
+        if event.keysym == 'Delete':
             return
         if event.keysym == 'BackSpace':
             return
@@ -128,6 +130,12 @@ class User_Register:
     def char_validate(self,event):
         if event.keysym == 'Tab':
             return
+        if event.keysym == 'Shift_L':
+            return
+        if event.keysym == 'Shift_R':
+            return
+        if event.keysym == 'Delete':
+            return
         if event.keysym == 'BackSpace':
             return
         widget = event.widget  
@@ -138,6 +146,19 @@ class User_Register:
             return 'break'
         else: 
             widget.delete(x)
+
+    def num_check(self,event):
+        if int(self.contact.get())<1000000000:
+            self.cvalid.config(image=self.cross)
+        else:
+            self.cvalid.config(image=self.tick)
+
+    def mail_check(self,event):
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        if not (re.search(regex,self.mail.get())):
+            self.mvalid.config(image=self.cross)
+        else:
+            self.mvalid.config(image=self.tick)
 
 root = Tk()
 obj = User_Register(root)
