@@ -233,6 +233,10 @@ class Bill_App:
     def generate_bill(self):
         if self.card_noen.get() =="" or self.card_nameen.get()=="" or self.cvv_en.get()=="":
             messagebox.showerror("Error","All fields are mandatory",parent = self.root4)
+        elif len(self.card_noen.get())<19:
+            messagebox.showerror("Error","Invalid card number!",parent = self.root4)
+        elif len(self.cvv_en.get())<3:
+            messagebox.showerror("Error","Invalid CVV!",parent = self.root4)
         else:
             mes= messagebox.askyesno("Notification","Are you sure to proceed?")    
             if mes > 0:
