@@ -14,9 +14,7 @@ class User_Register:
         self.bg= ImageTk.PhotoImage(Image.open("../IMS/icons/bgregister.png"))
         bg= Label(self.root,image=self.bg)
         bg.place(x=0,y=0,relwidth=1,relheight=1)
-        self.login_b=ImageTk.PhotoImage(Image.open("../IMS/icons/login.png"))
-        self.regs_b=ImageTk.PhotoImage(Image.open("../IMS/icons/register.png"))
-        self.imslogo=ImageTk.PhotoImage(Image.open("../IMS/icons/logo2.png"))
+        self.imslogo=ImageTk.PhotoImage(Image.open("../IMS/icons/logo.png"))
         self.tick=ImageTk.PhotoImage(Image.open("../IMS/icons/tick.png"))
         self.cross=ImageTk.PhotoImage(Image.open("../IMS/icons/cross.png"))
         logo= Label(self.root,image=self.imslogo)
@@ -66,9 +64,9 @@ class User_Register:
         usrnew_uname = Label(self.usrn_frame, text = "Username      : ", font =("Arial",16),bg="Firebrick2", fg="White").grid(row = 9, column = 0, padx = 10, pady = 10)
         self.username = Entry(self.usrn_frame, width = 40, bg = "White", font =("Arial",16))
         self.username.grid(row = 9, column = 1, padx = 10, pady = 10)
-        self.register_btn = Button (self.usrn_frame, image=self.regs_b,command=self.register, font = ("Arial",18),bd=3,bg="red2")
+        self.register_btn = Button (self.usrn_frame, text="Register",command=self.register, font =("Times New Roman",20,"bold"),bd=3,bg="red2",fg="white")
         self.register_btn.place(x=210, y=460, height = 50, width = 250)
-        self.login = Button(self.root, image=self.login_b, command = login, font = ("Arial",18),bd=3,bg="red2")
+        self.login = Button(self.root, text="Login",font =("Times New Roman",20,"bold"), command = login,bd=3,bg="red2",fg="white")
         self.login.place(x=120, y=590, height = 50, width = 250)
 
     def register(self):
