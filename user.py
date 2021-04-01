@@ -16,14 +16,10 @@ class Bill_App:
         self.bg= ImageTk.PhotoImage(Image.open("../IMS/icons/bg.jpg"))
         bg= Label(self.root,image=self.bg)
         bg.place(x=0,y=72,relwidth=1,relheight=1)
-        self.ttotal=ImageTk.PhotoImage(file="../IMS/icons/total.png")
-        self.Gen_bill=ImageTk.PhotoImage(file="../IMS/icons/bill.png")
-        self.Clear_b=ImageTk.PhotoImage(file="../IMS/icons/clear.png")
         self.inventory_b=ImageTk.PhotoImage(file="../IMS/icons/inventory.png")
         self.contact_b=ImageTk.PhotoImage(file="../IMS/icons/contact.png")
         self.exit_b=ImageTk.PhotoImage(file="../IMS/icons/exit.png")
         self.add_b=ImageTk.PhotoImage(file="../IMS/icons/cart.png")
-        self.mybills=ImageTk.PhotoImage(file="../IMS/icons/mybills.png")
         self.total_entry=DoubleVar()
         self.tax_entry=DoubleVar()
         self.grand_total=DoubleVar()
@@ -59,9 +55,10 @@ class Bill_App:
         cname_txt=Entry(F1,textvariable=self.c_name,width=20,font="arial 15",bd=3,relief=SUNKEN,state=DISABLED).grid(row=0,column=1,pady=2,padx=10)
         uname_lbl=Label(F1,bg="red2",fg="white",text="Username:",font=("times new roman",18,"bold")).grid(row=0,column=2,padx=20,pady=5)
         uname_txt=Entry(F1,textvariable=self.username,width=20,font="arial 15",bd=3,relief=SUNKEN,state=DISABLED).grid(row=0,column=3,pady=2,padx=10)
-        bill_btn=Button(F1,image=self.mybills,command=self.show_bills,width=113,height=25,bg="red2",text="Search",bd=3,font="arial 15 bold").grid(row=0,column=4,padx=20,pady=2)
-        contact_btn=Button(F1,image=self.contact_b,command=self.contact,compound=TOP,pady=6,bg="red2",fg="black",bd=3).place(x=1390,y=0,width=45,height=45)
-        Exit_btn=Button(F1,image=self.exit_b,command=self.exit,width=80,height=65,compound=TOP,pady=6,bg="red2",fg="black",bd=3).place(x=1450,y=0,width=45,height=45)
+        bill_btn=Button(F1,text="Past orders",command=self.show_bills,bg="red2",fg="white",bd=3,font =("Times New Roman",20,"bold"))
+        bill_btn.place(x=900,y=0,width=150,height=45)
+        contact_btn=Button(F1,image=self.contact_b,command=self.contact,compound=TOP,pady=6,bg="red2",bd=3).place(x=1390,y=0,width=45,height=45)
+        Exit_btn=Button(F1,image=self.exit_b,command=self.exit,width=80,height=65,compound=TOP,pady=6,bg="red2",bd=3).place(x=1450,y=0,width=45,height=45)
 
         F2=LabelFrame(self.root,bd=5,relief=GROOVE, text="Search Items",font=("times new roman",15,"bold"),fg="Black",bg="white")
         F2.place(x=20,y=170,width=310,height=460)
@@ -136,15 +133,12 @@ class Bill_App:
         CPaylbl.grid(row=1,column=2,padx=10,pady=5,sticky="w")
         CPayEntry = Entry(F6,width=10, font=("Times",14,"bold"),textvariable=self.customer_pay,bd=3, relief=SUNKEN,state=DISABLED)
         CPayEntry.grid(row=1,column=3,padx=10,pady=5)
-
-        btn_F=Frame(F6,bd=3,bg="white",relief=GROOVE)
-        btn_F.place(x=705,width=460,height=50)
-        total_btn=Button(btn_F,image=self.ttotal,command=self.total,bg="red2",text="Total",fg="white",pady=12,width=120,height=30,bd=3)
-        total_btn.grid(row=0,column=0,padx=5,pady=2)
-        GBill_btn=Button(btn_F,image=self.Gen_bill,command=self.generate_bill,bg="red2",text="Generate Bill",fg="white",pady=12,width=160,height=30,bd=3)
-        GBill_btn.grid(row=0,column=1,padx=5,pady=2)
-        Clear_btn=Button(btn_F,image=self.Clear_b,command=self.clear,bg="red2",text="Clear",fg="white",pady=12,width=120,height=30,bd=3)
-        Clear_btn.grid(row=0,column=2,padx=5,pady=2)
+        total_btn=Button(F6,text="Total",bg="red2",fg="white",font =("Times New Roman",18,"bold"),command=self.total,bd=3)
+        total_btn.place(x=730,y=10,width=100,height=45)
+        GBill_btn=Button(F6,text="Generate Bill",bg="red2",fg="white",font =("Times New Roman",18,"bold"),command=self.payment,bd=3)
+        GBill_btn.place(x=840,y=10,width=150,height=45)
+        Clear_btn=Button(F6,text="Clear",bg="red2",fg="white",font =("Times New Roman",18,"bold"),command=self.clear,bd=3)
+        Clear_btn.place(x=1000,y=10,width=100,height=45)
         self.welcome_bill()
 
     def search_item(self,ev):
@@ -190,50 +184,96 @@ class Bill_App:
             self.total()
             con.close()        
         
-    def generate_bill(self):
-        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
-        cur=con.cursor()
-        items=""
+    def payment(self):
         cart_list=self.cart_table.get_children()
         i=0
         for each in cart_list:
             i=i+1
-        ptable=PrettyTable(["S. No.","Product","Qty","Price"])
         if i==0:
             messagebox.showinfo("Alert","Add items to cart!")
         else:
-            self.total()
-            i=1
-            for each in cart_list:
-                if items!="":
-                    items=items+","
-                items=items+str(self.cart_table.item(each)['values'][1])+"("+str(self.cart_table.item(each)['values'][2])+")"
-                statement=f"UPDATE inventory SET product_qty=product_qty-{self.cart_table.item(each)['values'][2]},sales=sales+{self.cart_table.item(each)['values'][2]} WHERE product_id={self.cart_table.item(each)['values'][0]}"
-                cur.execute(statement)
+            self.root4 = Toplevel()
+            self.root4.title("Inventory Management")
+            self.root4.geometry("750x400+375+100")
+            self.cardno = StringVar()
+            self.cardname = StringVar()
+            self.exp_month = StringVar()
+            self.exp_year = StringVar()
+            self.cvv_no = StringVar()
+            title2=Label(self.root4,text="Online Payment",bd=5,relief=GROOVE,fg="white",bg="red2",font=("times new roman",30,"bold"))
+            title2.pack(side=TOP,fill=X)
+            bg1= Label(self.root4,image=self.bg)
+            bg1.place(x=0,y=72,relwidth=1,relheight=1)
+            self.checkout_frame = LabelFrame(self.root4, text="Online Payment", bg = "white", font =("Times New Roman",20))
+            self.checkout_frame.place(x = 55, y =90 , height = 300, width = 630)
+            card_no = Label(self.checkout_frame, text = " Card No.   : ",bg = "tomato", font =("Times New Roman",16)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
+            self.card_noen = Entry(self.checkout_frame, textvariable = self.cardno,bd=3,width = 27,bg = "LightGray", font =("Times New Roman",16))
+            self.card_noen.grid(row = 0, column = 1,padx = 10, pady = 15,sticky="w")
+            self.card_noen.bind("<KeyPress>",self.card_no)
+            card_name = Label(self.checkout_frame, text = " Name on Card : ",bg = "tomato", font =("Times New Roman",16)).grid(row = 1, column = 0,padx = 10, pady = 15,sticky="w")
+            self.card_nameen = Entry(self.checkout_frame, textvariable = self.cardname,bd=3,width = 27,bg = "LightGray", font =("Times New Roman",16))
+            self.card_nameen.grid(row = 1, column = 1,columnspan=4,padx = 10, pady = 15,sticky="w")
+            self.card_nameen.bind("<KeyPress>",self.card_name)
+            exp_date = Label(self.checkout_frame, text = " Expiry Date : ",bg = "tomato", font =("Times New Roman",16)).grid(row = 2, column = 0,padx = 10, pady = 15,sticky="w")
+            self.month = ttk.Combobox(self.checkout_frame,textvariable = self.exp_month, font =("Times New Roman",16), width = 5,state = "readonly" , justify = "center")
+            self.month['values']=("Jan","Feb","March","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec")
+            self.month.grid(row = 2, column = 1, pady = 15,sticky="w")
+            self.month.current(0)
+            self.year = ttk.Combobox(self.checkout_frame,textvariable = self.exp_year, font =("Times New Roman",16),state = "readonly" , justify = "center")
+            self.year['values']=("2021","2022","2022","2023","2024")
+            self.year.place(x=250,y=136,width=80,height=30)
+            self.year.current(0)
+            cvv= Label(self.checkout_frame, text = " CVV : ",bg = "tomato", font =("Times New Roman",18)).place(x=360,y=136,width=80,height=30)
+            self.cvv_en = Entry(self.checkout_frame, textvariable = self.cvv_no,bd=3,width = 5,bg = "LightGray", font =("Times New Roman",18))
+            self.cvv_en.place(x=460,y=136,width=80,height=30)
+            self.cvv_en.bind("<KeyPress>", self.cvv)
+            pay_btn=Button(self.checkout_frame,command=self.generate_bill,bg="red2",text="Confirm",fg="white",font =("Times New Roman",18,"bold"),bd=3)
+            pay_btn.place(x=250,y=200,width=120,height=40)
+    
+    def generate_bill(self):
+        if self.card_noen.get() =="" or self.card_nameen.get()=="" or self.cvv_en.get()=="":
+            messagebox.showerror("Error","All fields are mandatory",parent = self.root4)
+        else:
+            mes= messagebox.askyesno("Notification","Are you sure to proceed?")    
+            if mes > 0:
+                self.root4.destroy()
+                cart_list=self.cart_table.get_children()
+                con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
+                cur=con.cursor()
+                items=""
+                ptable=PrettyTable(["S. No.","Product","Qty","Price"])
+                self.total()
+                i=1
+                for each in cart_list:
+                    if items!="":
+                        items=items+","
+                    items=items+str(self.cart_table.item(each)['values'][1])+"("+str(self.cart_table.item(each)['values'][2])+")"
+                    statement=f"UPDATE inventory SET product_qty=product_qty-{self.cart_table.item(each)['values'][2]},sales=sales+{self.cart_table.item(each)['values'][2]} WHERE product_id={self.cart_table.item(each)['values'][0]}"
+                    cur.execute(statement)
+                    con.commit()
+                    ptable.add_row([i,self.cart_table.item(each)['values'][1],self.cart_table.item(each)['values'][2],self.cart_table.item(each)['values'][3]])
+                    self.cart_table.detach(each)
+                    i=i+1
+                self.txtarea.insert(END,ptable)
+                self.txtarea.insert(END,f"\n=======================================")
+                self.txtarea.insert(END,f"\n\t     Subtotal Rs. {self.total_entry.get()}")
+                self.txtarea.insert(END,f"\n\t     Sales Tax Rs. {0.18*int(self.total_entry.get())}")
+                self.txtarea.insert(END,"\n---------------------------------------")
+                self.txtarea.insert(END,"\n------------AFTER DISCOUNT-------------")
+                self.txtarea.insert(END,f"\n\t\tTotal Rs.  {self.customer_pay.get()}")
+                self.txtarea.insert(END,"\n---------------------------------------")
+                self.txtarea.insert(END,"\n\n\n\n\n----------Thanks for Shopping!---------")
+                self.bill_data=self.txtarea.get('1.0',END)
+                f=open("../IMS/Bill"+str(self.bill_no.get())+".txt","w")
+                f.write(self.bill_data)
+                f.close()
+                messagebox.showinfo("Saved",f"Bill No. :{(self.bill_no.get())} saved Successfully.")
+                amount=self.customer_pay.get()
+                cur.execute("INSERT INTO sales_bill VALUES(%s,%s,%s,%s,%s)",(self.bill_no.get(),self.username.get(),items,date.today().strftime("%d/%m/%Y"),amount))
                 con.commit()
-                ptable.add_row([i,self.cart_table.item(each)['values'][1],self.cart_table.item(each)['values'][2],self.cart_table.item(each)['values'][3]])
-                self.cart_table.detach(each)
-                i=i+1
-            self.txtarea.insert(END,ptable)
-            self.txtarea.insert(END,f"\n=======================================")
-            self.txtarea.insert(END,f"\n\t     Subtotal Rs. {self.total_entry.get()}")
-            self.txtarea.insert(END,f"\n\t     Sales Tax Rs. {0.18*int(self.total_entry.get())}")
-            self.txtarea.insert(END,"\n---------------------------------------")
-            self.txtarea.insert(END,"\n------------AFTER DISCOUNT-------------")
-            self.txtarea.insert(END,f"\n\t\tTotal Rs.  {self.customer_pay.get()}")
-            self.txtarea.insert(END,"\n---------------------------------------")
-            self.txtarea.insert(END,"\n\n\n\n\n----------Thanks for Shopping!---------")
-            self.bill_data=self.txtarea.get('1.0',END)
-            f=open("../IMS/Bill"+str(self.bill_no.get())+".txt","w")
-            f.write(self.bill_data)
-            f.close()
-            messagebox.showinfo("Saved",f"Bill No. :{(self.bill_no.get())} saved Successfully.")
-            amount=self.customer_pay.get()
-            cur.execute("INSERT INTO sales_bill VALUES(%s,%s,%s,%s,%s)",(self.bill_no.get(),self.username.get(),items,date.today().strftime("%d/%m/%Y"),amount))
-            con.commit()
-            con.close()
-            self.welcome_bill()
-            self.clear()
+                con.close()
+                self.welcome_bill()
+                self.clear()
 
     def total(self):
         ftotal=0
@@ -386,6 +426,49 @@ class Bill_App:
         self.txtarea.insert(END,"\n\t    Email: imsstore@gmail.com")
         self.txtarea.insert(END,"\n       Contact Number. 9942510320,7014299815")
         self.txtarea.pack()
+    
+    def card_no(self,event):
+        if event.keysym == 'Tab':
+            return
+        if event.keysym == 'Delete':
+            return
+        if event.keysym == 'BackSpace':
+            return
+        widget = event.widget  
+        entry = widget.get()
+        x = widget.index(INSERT)
+        if not event.char.isdigit() or x > 18:
+            widget.bell()
+            return 'break'
+        else: 
+            widget.delete(x)
+        if x==4 or x==9 or x==14:
+             event.widget.insert(x, "-")
+
+    
+    def card_name(self,event):
+        widget = event.widget  
+        entry = widget.get()
+        x = widget.index(INSERT)
+        if event.char.isdigit():
+            widget.bell()
+            return 'break'
+        else:
+            widget.delete(x)
+    
+    def cvv(self,event):
+        if event.keysym == 'Delete':
+            return
+        if event.keysym == 'BackSpace':
+            return
+        widget = event.widget  
+        entry = widget.get()
+        x = widget.index(INSERT)
+        if not event.char.isdigit() or x > 2:
+            widget.bell()
+            return 'break'
+        else: 
+            widget.delete(x)
     
     def exit(self):
         mes= messagebox.askyesno("Notification","Do You want to logout?")    

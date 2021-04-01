@@ -6,6 +6,9 @@ from tkinter import messagebox
 from PIL import Image,ImageTk
 import math,random
 import os
+import datetime
+from datetime import date,timedelta
+from tkcalendar import Calendar,DateEntry
 
 class Customer:
     def __init__(self,root,id):
@@ -59,26 +62,21 @@ class Customer:
         self.txt_threshold.grid(row=6,column=1,pady=10,padx=20,sticky="w")
         self.txt_threshold.bind('<KeyPress>', self.num_validate)
         
-        self.add_b=ImageTk.PhotoImage(file="../IMS/icons/add.png")
-        self.update_b=ImageTk.PhotoImage(file="../IMS/icons/update.png")
-        self.delete_b=ImageTk.PhotoImage(file="../IMS/icons/remove.png")
-        self.clear_b=ImageTk.PhotoImage(file="../IMS/icons/clear.png")
-        self.show_b=ImageTk.PhotoImage(file="../IMS/icons/show.png")
         self.exit_b=ImageTk.PhotoImage(file="../IMS/icons/exit.png")
-        self.sales=ImageTk.PhotoImage(file="../IMS/icons/inventory.png")
+        self.lowstock_b=ImageTk.PhotoImage(file="../IMS/icons/inventory.png")
         self.forecast_b=ImageTk.PhotoImage(file="../IMS/icons/forecast.png")
         self.userdet_b=ImageTk.PhotoImage(file="../IMS/icons/user.png")
         
         self.btns=Frame(self.manage_frame,bd=5,relief=GROOVE,bg="white")
-        self.btns.place(x=65,y=400,width=465)
-        add_btn=Button(self.btns,image=self.add_b,width=85,height=35,bg="red2",bd=3,command=self.add_product).grid(row=0,column=0,padx=10,pady=10)
-        update_btn=Button(self.btns,image=self.update_b,width=85,height=35,bg="red2",bd=3,command=self.update_data).grid(row=0,column=1,padx=10,pady=10)
-        delete_btn=Button(self.btns,image=self.delete_b,width=85,height=35,bg="red2",bd=3,command=self.delete_data).grid(row=0,column=2,padx=10,pady=10)
-        clear_btn=Button(self.btns,image=self.clear_b,width=85,height=35,bg="red2",bd=3,command=self.clear).grid(row=0,column=3,padx=10,pady=10)
+        self.btns.place(x=65,y=400,width=465,height=100)
+        add_btn=Button(self.btns,text="Add",bg="red2",fg="white",font =("Times New Roman",18,"bold"),bd=3,command=self.add_product).place(x=10,y=5,width=100,height=45)
+        update_btn=Button(self.btns,text="Update",bg="red2",fg="white",font =("Times New Roman",18,"bold"),bd=3,command=self.update_data).place(x=120,y=5,width=100,height=45)
+        delete_btn=Button(self.btns,text="Delete",bg="red2",fg="white",font =("Times New Roman",18,"bold"),bd=3,command=self.delete_data).place(x=230,y=5,width=100,height=45)
+        clear_btn=Button(self.btns,text="Clear",bg="red2",fg="white",font =("Times New Roman",18,"bold"),bd=3,command=self.clear).place(x=340,y=5,width=100,height=45)
         
         self.btn_frame=Frame(self.manage_frame,bd=5,relief=GROOVE,bg="white")
         self.btn_frame.place(x=65,y=470,width=465)
-        Sales_btn=Button(self.btn_frame,image=self.sales,command=self.low_stock,width=40,height=40,bg="red2",bd=3).grid(row=0,column=0,padx=10,pady=5)
+        Sales_btn=Button(self.btn_frame,image=self.lowstock_b,command=self.low_stock,width=40,height=40,bg="red2",bd=3).grid(row=0,column=0,padx=10,pady=5)
         Sales_lbl=Label(self.btn_frame,text="Low stock",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=0,padx=10,pady=0)
         forecast_btn= Button(self.btn_frame,image=self.forecast_b, width = 40, height= 40, bg="red2", bd=3, command= self.forecast_prod).grid(row=0, column=1, padx=10, pady= 5)
         forecast_lbl=Label(self.btn_frame,text="Forecasting",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=1,padx=10,pady=0)
@@ -94,7 +92,7 @@ class Customer:
         self.txt_search=Entry(self.details_frame,width=15,textvariable=self.search_txt,font=("times new roman",16,"bold"),bd=5,relief=GROOVE)
         self.txt_search.grid(row=0,column=1,pady=10,padx=20,sticky="w")
         self.txt_search.bind('<KeyPress>', self.search_data)
-        showall_btn=Button(self.details_frame,image=self.show_b,width=90,height=30,bg="red2",bd=3,command=self.fetch_data).grid(row=0,column=2,padx=10,pady=10)
+        showall_btn=Button(self.details_frame,text="Show all",bg="red2",fg="white",font =("Times New Roman",18,"bold"),bd=3,command=self.fetch_data).place(x=400,y=10,width=120,height=35)
         self.table_frame=Frame(self.details_frame,bd=4,relief=RIDGE,bg="white")
         self.table_frame.place(x=20,y=70,width=800,height=540)
         scroll_x=Scrollbar(self.table_frame,orient=HORIZONTAL)
@@ -324,6 +322,8 @@ class Customer:
         self.bp=DoubleVar()
         self.sp=DoubleVar()
         self.profit=DoubleVar()
+        self.calender1=StringVar()
+        self.calender2=StringVar()
         F1=LabelFrame(self.root3,bd=5,relief=GROOVE, text="Sale details",font=("times new roman",15,"bold"),fg="Black",bg="white")
         F1.place(x=10,y=640,width=780,height=150)
         bp_lbl=Label(F1,bg="red2",fg="white",text="Buying price:",font=("times new roman",18,"bold")).grid(row=0,column=0,padx=15,pady=5)
@@ -332,10 +332,17 @@ class Customer:
         sp_txt=Entry(F1,textvariable=self.sp,width=20,font="arial 15",bd=3,relief=SUNKEN,state=DISABLED).grid(row=1,column=1,pady=2,padx=10)
         p_lbl=Label(F1,bg="red2",fg="white",text="Profit:",font=("times new roman",18,"bold")).grid(row=0,column=2,padx=15,pady=5)
         p_txt=Entry(F1,textvariable=self.profit,width=20,font="arial 15",bd=3,relief=SUNKEN,state=DISABLED).grid(row=0,column=3,pady=2,padx=10)
+        
+        calender_btn=Button(self.root3,text="Choose",command=self.calender, font = ("times new roman",18,"bold"),bd=3,bg="red2",fg="White")
+        calender_btn.place(x=10,y=590,width=150,height=40)
+        cal1=Entry(self.root3,textvariable=self.calender1,width=20,font="arial 15",bd=3,relief=SUNKEN,state=DISABLED)
+        cal1.place(x=170,y=590,width=150,height=40)
+        cal2=Entry(self.root3,textvariable=self.calender2,width=20,font="arial 15",bd=3,relief=SUNKEN,state=DISABLED)
+        cal2.place(x=330,y=590,width=150,height=40)
         sales_btn=Button(self.root3,text="Sales",command=self.month_graph, font = ("times new roman",18,"bold"),bd=3,bg="red2",fg="White")
-        sales_btn.place(x=10,y=590,width=100,height=40)
+        sales_btn.place(x=490,y=590,width=100,height=40)
         prod_btn=Button(self.root3,text="Top Products",command=self.product_graph, font = ("times new roman",18,"bold"),bd=3,bg="red2",fg="White")
-        prod_btn.place(x=130,y=590,width=150,height=40)
+        prod_btn.place(x=610,y=590,width=150,height=40)
         
         self.forcast_frame=Frame(self.root3,bd=5,relief=RIDGE,bg="white")
         self.forcast_frame.place(x=810,y=100,width=700,height=650)
@@ -345,20 +352,20 @@ class Customer:
         self.forcast_frame.place(x=10,y=60,width=690,height=560)
         scroll_x=Scrollbar(self.forcast_frame,orient=HORIZONTAL)
         scroll_y=Scrollbar(self.forcast_frame,orient=VERTICAL)
-        self.forcast_table=ttk.Treeview(self.forcast_frame,columns=("ID","Product","Sales","Monthly","Yearly"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
+        self.forcast_table=ttk.Treeview(self.forcast_frame,columns=("ID","Product","Overall Sales","Monthly","Yearly"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
         scroll_x.pack(side=BOTTOM,fill=X)
         scroll_y.pack(side=RIGHT,fill=Y)
         scroll_x.config(command=self.forcast_table.xview)
         scroll_y.config(command=self.forcast_table.yview)
         self.forcast_table.heading("ID",text="ID")
         self.forcast_table.heading("Product",text="Product")
-        self.forcast_table.heading("Sales",text="Sales")
+        self.forcast_table.heading("Overall Sales",text="Overall Sales")
         self.forcast_table.heading("Monthly",text="Monthly")
         self.forcast_table.heading("Yearly",text="Yearly")
         self.forcast_table['show']='headings'
-        self.forcast_table.column("ID",width=10)
-        self.forcast_table.column("Product",width=150)
-        self.forcast_table.column("Sales",width=10)
+        self.forcast_table.column("ID",width=5)
+        self.forcast_table.column("Product",width=120)
+        self.forcast_table.column("Overall Sales",width=20)
         self.forcast_table.column("Monthly",width=30)
         self.forcast_table.column("Yearly",width=30)
         self.forcast_table.pack(fill=BOTH,expand=1)
@@ -366,20 +373,25 @@ class Customer:
         style.configure("Treeview", highlightthickness=0, bd=0, font=("Arial", 12))
         style.configure("Treeview.Heading", font=("Times new roman", 14, "bold"))
         self.sale_records()
-        
-        cost_price=0.0
-        selling_price=0.0
-        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
-        cur=con.cursor()
-        cur.execute("SELECT * FROM inventory")
-        rows=cur.fetchall()
-        for row in rows:
-            cost_price=cost_price+float(row[3]*row[5])
-        con.commit()
-        con.close()
-        self.bp.set(cost_price)
-        self.month_graph()
+        self.product_graph()
 
+    def calender(self):
+        def get_date():
+            self.calender1.set(cal1.selection_get())
+            self.calender2.set(cal2.selection_get())
+        win= Tk()
+        win.title("Calendar")
+        win.geometry("480x480")
+        label1=Label(win, text = "Start date: ", font =("Arial",16),bg="red2", fg="White").place(x=10,y=70,width=120,height=35)
+        label2=Label(win, text = "End date: ", font =("Arial",16),bg="red2", fg="White").place(x=10,y=270,width=120,height=35)
+        cal1=Calendar(win, font="Arial 9",locale='en_US',selectmode='day', year=2021, month=4, day=1)
+        cal1.pack()
+        cal2=Calendar(win, font="Arial 9",locale='en_US', selectmode='day', year=2021, month=4, day=1)
+        cal2.pack()
+        button= Button(win, text= "Done", command= get_date,font =("Times New Roman",16,"bold"),bd=3,bg="red2",fg="white")
+        button.place(x=200,y=420,width=100,height=35)
+        win.mainloop()
+    
     def sale_records(self):
         con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
         cur=con.cursor()
@@ -411,47 +423,60 @@ class Customer:
                 
                 vals=(row[0],row[1],row[5],monthly,monthly*12)
                 self.forcast_table.insert('',END,values=vals)
-                con.commit()
+            con.commit()
         con.close()
     
     def month_graph(self):
         days=[]
         sales=[]
-        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
-        cur=con.cursor()
-        cur.execute("SELECT * FROM sales_bill")
-        rows=cur.fetchall()
-        for row in rows:
-            date=row[3]
-            days.append(date)
-            con2=pymysql.connect(host="localhost",user="root",password="root",database="ims")
-            cur=con2.cursor()
-            cur.execute("SELECT * FROM sales_bill WHERE date=%s",date)
-            vals=cur.fetchall()
+        self.product=[]
+        self.quantity=[]
+        end = datetime.datetime.strptime(self.calender2.get(), "%Y-%m-%d").date()
+        start = datetime.datetime.strptime(self.calender1.get(), "%Y-%m-%d").date()
+        i=int(str((end-start))[:2])
+        while i>=0:
+            d=(start + timedelta(days = i)).strftime("%d/%m/%Y")
+            days.append(d[:5])
+            con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
+            cur=con.cursor()
+            cur.execute("SELECT * FROM sales_bill WHERE date=%s",d)
+            rows=cur.fetchall()
             amount=0.0
-            for x in vals:
-                amount=amount+float(str(x[4]))
+            for row in rows:
+                val=str(row[2])
+                s={sub.split("(")[0]: sub.split("(")[1] for sub in val[:-1].split("),")}
+                self.product.extend(list(s.keys()))
+                self.quantity.extend(list(s.values()))
+                amount=amount+float(str(row[4]))
             sales.append(amount)
-            con2.commit
-            con2.close
-        con.commit()
-        con.close()
-        days=list(dict.fromkeys(days))
-        sales=list(dict.fromkeys(sales))
+            con.commit
+            con.close
+            i=i-1
+        days.reverse()
+        sales.reverse()
         selling_price=sum(sales)
         self.sp.set(format(selling_price, ".2f"))
-        self.profit.set(format(selling_price-self.bp.get(), ".2f"))
+        cost_price=0.0
+        i=0
+        while i<len(self.product):
+            con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
+            cur=con.cursor()
+            cur.execute("SELECT * FROM inventory WHERE product_name=%s",self.product[i])
+            row=cur.fetchone()
+            cost_price+=int(row[3])*int(self.quantity[i])
+            i=i+1
+        self.bp.set(cost_price)
+        self.profit.set(format(self.sp.get()-self.bp.get(), ".2f"))
         plt.clf()
         plt.plot(days,sales)
         plt.xlabel('Days', fontsize=16)
         plt.ylabel('Sales', fontsize=16)
         fig = plt.gcf()
-        fig.suptitle('Previous month sales', fontsize=18)
+        fig.suptitle('Sales per Day', fontsize=18)
         fig.set_size_inches(8,5)
         fig.savefig("MGraph.jpg")
         self.sales_graph=ImageTk.PhotoImage(Image.open("../IMS/MGraph.jpg"))
-        self.graph=Label(self.root3,image=self.sales_graph)
-        self.graph.place(x=10,y=80,width=780,height=500)
+        self.graph.config(image=self.sales_graph)
         os.remove("MGraph.jpg")
     
     def product_graph(self):
@@ -470,13 +495,14 @@ class Customer:
         plt.clf()
         plt.bar(products,sales)
         plt.xlabel('Products', fontsize=16)
-        plt.ylabel('Sales', fontsize=16)
+        plt.ylabel('Quantity', fontsize=16)
         fig=plt.gcf()
         fig.suptitle('5 Highest selling products', fontsize=18)
         fig.set_size_inches(8,5)
         fig.savefig("PGraph.jpg")
         self.prod_graph=ImageTk.PhotoImage(Image.open("../IMS/PGraph.jpg"))
-        self.graph.config(image=self.prod_graph)
+        self.graph=Label(self.root3,image=self.prod_graph)
+        self.graph.place(x=10,y=80,width=780,height=500)
         os.remove("PGraph.jpg")
         self.fetch_data()
     
