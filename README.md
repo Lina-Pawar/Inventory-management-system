@@ -6,11 +6,12 @@ Stock Management: This is used to add the new items that are brought in the inve
 Billing Section: Billing section is also there that would create the invoice and save it in .txt format in IMS folder. It is used to create an invoice using item no. Customer name and customer phone number are mandatory part to generate invoice that would have invoice id as a random number between 1000 and 9999.
 Pre-Requisites:
 Make sure you have latest python version installed on your system.
-Make sure you have install these  using these commands-
+Make sure you have install the required libraries using these commands-
 1. pip install pymysql
 2. pip install mysql-connector-python
 3. pip install prettytable
 4. pip install tkcalendar
+
 Make sure you have mysql database with mysql-connector-python installed on your system along with phpMyadmin to access database graphically.
 Steps to run:
 
