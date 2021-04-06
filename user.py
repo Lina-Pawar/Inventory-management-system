@@ -29,8 +29,6 @@ class Bill_App:
         self.item_no=StringVar()
         self.item_name=StringVar()
         self.item_price=IntVar()
-        self.item_quantity=IntVar()
-        self.item_quantity.set(1)
         con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
         cur=con.cursor()
         cur.execute("SELECT * FROM users WHERE username=%s",(id))
@@ -79,7 +77,8 @@ class Bill_App:
         prod_price_lbl=Label(F3,text="Price (in Rs):",font=("times new roman",16,"bold"),bg="red2",fg="white").grid(row=2,column=0,padx=0,pady=10,sticky="w")
         prod_price_txt=Label(F3,textvariable=self.item_price,font=("times new roman",16,"bold"),width=15,bg="Lightgray",fg="black").grid(row=2,column=1,padx=10,pady=10,stick="w")
         qty_lbl=Label(F3,text="Item Quantity.",font=("times new roman",16,"bold"),bg="red2",fg="white").grid(row=3,column=0,padx=0,pady=10,sticky="w")
-        self.qty_txt=Entry(F3,width=10,textvariable=self.item_quantity,font=("times new roman",16,"bold"),bd=3,relief=SUNKEN).grid(row=3,column=1,padx=10,pady=10)
+        self.item_quantity=Spinbox(F3, from_=1, to=50,font =("Arial",16),width=5)
+        self.item_quantity.grid(row=3,column=1,padx=10,pady=10)
         addcart=Button(F3,image=self.add_b,command=self.add_item,bg="red2",fg="white",pady=15,width=120,bd=3,font="arial 15 bold").grid(row=4,column=1,padx=5,pady=5)
 
         F4=LabelFrame(self.root,bd=5,relief=GROOVE, text="Shopping Cart",font=("times new roman",16,"bold"),fg="Black",bg="White")
@@ -188,7 +187,7 @@ class Bill_App:
                     quantity=int(self.cart_table.item(x)['values'][2])
                     self.cart_table.detach(x)
                     self.delete.detach(x)
-            q=self.item_quantity.get()+quantity
+            q=int(self.item_quantity.get())+quantity
             if q<available_quantity or q==available_quantity:
                 new_item=(self.item_no.get(),self.item_name.get(),q,self.item_price.get()*q)
                 self.cart_table.insert('',END, values=new_item)
@@ -324,7 +323,8 @@ class Bill_App:
         row=contents['values']
         self.item_no.set(row[0])
         self.item_name.set(row[1])
-        self.item_quantity.set("1")
+        self.item_quantity.delete(0,"end")
+        self.item_quantity.insert(0,1)
         self.item_price.set(int(row[3]/row[2]))
         def choose_qty():
             q=int(spinbox.get())
@@ -375,7 +375,8 @@ class Bill_App:
         self.item_no.set("")
         self.item_name.set("")
         self.item_price.set(0)
-        self.item_quantity.set(1)
+        self.item_quantity.delete(0,"end")
+        self.item_quantity.insert(0,1)
         self.bill_no.set(int(random.randint(1000,9999)))
         self.total_entry.set("")
         self.tax_entry.set("")
@@ -463,7 +464,8 @@ class Bill_App:
         row=content['values']
         self.item_no.set(row[0])
         self.item_name.set(row[1])
-        self.item_quantity.set("1")
+        self.item_quantity.delete(0,"end")
+        self.item_quantity.insert(0,1)
         self.item_price.set(row[2])
 
     def combo_value(self):
