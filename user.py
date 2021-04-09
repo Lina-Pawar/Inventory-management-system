@@ -204,14 +204,14 @@ class Bill_App:
     def payment(self):
         cart_list=self.cart_table.get_children()
         i=0
-        for each in cart_list:
+        for x in cart_list:
             i=i+1
         if i==0:
             messagebox.showinfo("Alert","Add items to cart!")
         else:
             self.root4 = Toplevel()
             self.root4.title("Inventory Management")
-            self.root4.geometry("750x400+375+100")
+            self.root4.geometry("750x400+375+200")
             self.cardno = StringVar()
             self.cardname = StringVar()
             self.exp_month = StringVar()
@@ -265,15 +265,15 @@ class Bill_App:
                 ptable=PrettyTable(["S. No.","Product","Qty","Price"])
                 self.total()
                 i=1
-                for each in cart_list:
+                for x in cart_list:
                     if items!="":
                         items=items+","
-                    items=items+str(self.cart_table.item(each)['values'][1])+"("+str(self.cart_table.item(each)['values'][2])+")"
-                    statement=f"UPDATE inventory SET product_qty=product_qty-{self.cart_table.item(each)['values'][2]},sales=sales+{self.cart_table.item(each)['values'][2]} WHERE product_id={self.cart_table.item(each)['values'][0]}"
+                    items=items+str(self.cart_table.item(x)['values'][1])+"("+str(self.cart_table.item(x)['values'][2])+")"
+                    statement=f"UPDATE inventory SET product_qty=product_qty-{self.cart_table.item(x)['values'][2]},sales=sales+{self.cart_table.item(x)['values'][2]} WHERE product_id={self.cart_table.item(x)['values'][0]}"
                     cur.execute(statement)
                     con.commit()
-                    ptable.add_row([i,self.cart_table.item(each)['values'][1],self.cart_table.item(each)['values'][2],self.cart_table.item(each)['values'][3]])
-                    self.cart_table.detach(each)
+                    ptable.add_row([i,self.cart_table.item(x)['values'][1],self.cart_table.item(x)['values'][2],self.cart_table.item(x)['values'][3]])
+                    self.cart_table.detach(x)
                     i=i+1
                 self.txtarea.insert(END,ptable)
                 self.txtarea.insert(END,f"\n=======================================")
@@ -299,8 +299,8 @@ class Bill_App:
     def total(self):
         ftotal=0
         cart_list=self.cart_table.get_children()
-        for each in cart_list:
-            ftotal=ftotal+int(self.cart_table.item(each)['values'][3])
+        for x in cart_list:
+            ftotal=ftotal+int(self.cart_table.item(x)['values'][3])
         tax = 0.18*ftotal
         gtotal = ftotal + tax
         cust=gtotal-0.02*gtotal
@@ -333,14 +333,16 @@ class Bill_App:
             cur.execute(f"SELECT * from inventory where product_name='{self.item_name.get()}'")
             rows=cur.fetchall()
             available_quantity=rows[0][2]
-            if q<available_quantity or q==available_quantity:
+            if available_quantity==0:
+                messagebox.showinfo("Alert","Out of stock!")
+            elif q<available_quantity or q==available_quantity:
                 new_item=(self.item_no.get(),self.item_name.get(),q,rows[0][3]*q)
                 self.cart_table.detach(cursor_row)
                 self.delete.detach(cursor_row)
                 self.cart_table.insert('',END, values=new_item)
                 self.delete.insert('',END,open=True, values=("❌"))
             else:
-                messagebox.showinfo("Alert","Available quantity is less.")
+                messagebox.showinfo("Alert","Available stock is less.")
             con.close()
             win.destroy()
             self.total()
@@ -440,13 +442,13 @@ class Bill_App:
         self.invent_table.column("2",width=200)
         self.invent_table.column("3",width=30)
         self.invent_table.pack(fill=BOTH,expand=1)
-        self.invent_table.bind("<ButtonRelease-1>",self.get_cursor)
+        self.invent_table.bind("<ButtonRelease-1>",self.inventory_click)
         style = ttk.Style()
         style.configure("Treeview", highlightthickness=0, bd=0, font=("Arial", 12))
         style.configure("Treeview.Heading", font=("Times new roman", 14, "bold"))
-        self.fetch_data()
+        self.data()
 
-    def fetch_data(self): 
+    def data(self): 
         con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
         cur=con.cursor()
         cur.execute("SELECT product_id,product_name,product_price from inventory ORDER BY product_id ASC")
@@ -458,7 +460,7 @@ class Bill_App:
                 con.commit()
         con.close()
 
-    def get_cursor(self,ev):
+    def inventory_click(self,ev):
         cursor_row=self.invent_table.focus()
         content=self.invent_table.item(cursor_row)
         row=content['values']

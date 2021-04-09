@@ -26,7 +26,6 @@ class Customer:
         self.search_by=StringVar()
         self.search_txt=StringVar()
         self.product_price=IntVar()
-        self.threshold=IntVar()
         self.user_id = StringVar()
         self.product_id.set(str(random.randint(1000,9999)))
         
@@ -56,11 +55,6 @@ class Customer:
         self.txt_price=Entry(self.manage_frame,textvariable=self.product_price,font=("times new roman",16,"bold"),bd=5,relief=GROOVE)
         self.txt_price.grid(row=5,column=1,pady=10,padx=20,sticky="w")
         self.txt_price.bind('<KeyPress>', self.num_validate)
-        lbl_thres=Label(self.manage_frame,text="THRESHOLD :",bg="white",fg="black",font=("times new roman",16,"bold"))
-        lbl_thres.grid(row=6,column=0,pady=10,padx=20,sticky="w")
-        self.txt_threshold=Entry(self.manage_frame,textvariable=self.threshold,font=("times new roman",16,"bold"),bd=5,relief=GROOVE)
-        self.txt_threshold.grid(row=6,column=1,pady=10,padx=20,sticky="w")
-        self.txt_threshold.bind('<KeyPress>', self.num_validate)
         
         self.exit_b=ImageTk.PhotoImage(file="../IMS/icons/exit.png")
         self.lowstock_b=ImageTk.PhotoImage(file="../IMS/icons/inventory.png")
@@ -92,7 +86,7 @@ class Customer:
         self.txt_search=Entry(self.details_frame,width=15,textvariable=self.search_txt,font=("times new roman",16,"bold"),bd=5,relief=GROOVE)
         self.txt_search.grid(row=0,column=1,pady=10,padx=20,sticky="w")
         self.txt_search.bind('<KeyPress>', self.search_data)
-        showall_btn=Button(self.details_frame,text="Show all",bg="red2",fg="white",font =("Times New Roman",18,"bold"),bd=3,command=self.fetch_data).place(x=400,y=10,width=120,height=35)
+        showall_btn=Button(self.details_frame,text="Show all",bg="red2",fg="white",font =("Times New Roman",18,"bold"),bd=3,command=self.data).place(x=400,y=10,width=120,height=35)
         self.table_frame=Frame(self.details_frame,bd=4,relief=RIDGE,bg="white")
         self.table_frame.place(x=20,y=70,width=800,height=540)
         scroll_x=Scrollbar(self.table_frame,orient=HORIZONTAL)
@@ -109,18 +103,18 @@ class Customer:
         self.invent_table.heading("01",text="PRODUCT NAME")
         self.invent_table.heading("02",text="QUANTITY")
         self.invent_table.heading("03",text="PRICE")
-        self.invent_table.heading("04",text="THRESHOLD")
-        self.invent_table.heading("05",text="SALES")
+        self.invent_table.heading("04",text="SALES")
+        self.invent_table.heading("05",text="THRESHOLD")
         self.invent_table['show']='headings'
         self.invent_table.column("00",width=40)
         self.invent_table.column("01",width=160)
         self.invent_table.column("02",width=70)
         self.invent_table.column("03",width=50)
-        self.invent_table.column("04",width=70)
-        self.invent_table.column("05",width=40)
+        self.invent_table.column("04",width=40)
+        self.invent_table.column("05",width=70)
         self.invent_table.pack(fill=BOTH,expand=1)
         self.invent_table.bind("<ButtonRelease-1>",self.get_cursor)
-        self.fetch_data()
+        self.data()
     
     def exit(self):
         mes= messagebox.askyesno("Notification","Do You want to logout?")    
@@ -134,44 +128,40 @@ class Customer:
         else:
             con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
             cur=con.cursor()
-            cur.execute("INSERT INTO inventory VALUES(%s,%s,%s,%s,%s,0)",(self.product_id.get(),self.product_name.get(),self.product_qty.get(),self.product_price.get(),self.threshold.get()))
+            cur.execute("INSERT INTO inventory VALUES(%s,%s,%s,%s,0)",(self.product_id.get(),self.product_name.get(),self.product_qty.get(),self.product_price.get()))
             con.commit()
-            self.fetch_data()
+            self.data()
             self.clear()
             con.close()
             messagebox.showinfo("Success","Product added successfully!",parent = self.root)
 
-    def fetch_data(self): 
+    def data(self): 
         self.search_txt.set("")
         con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
         cur=con.cursor()
         cur.execute("SELECT * FROM inventory ORDER BY product_id ASC")
         rows=cur.fetchall()
+        d1 = datetime.datetime.strptime("2021-03-18", "%Y-%m-%d").date()
+        d2=date.today()
+        self.n=str((d2-d1)).split(" ")
         if len(rows)!=0:
             self.invent_table.delete(*self.invent_table.get_children())
             for row in rows:
-                self.invent_table.insert('',END,values=row)
+                self.invent_table.insert('',END,values=(row[0],row[1],row[2],row[3],row[4],int(row[4]/int(self.n[0]))+5))
                 con.commit()
         con.close()
         
     def low_stock(self):
-        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
-        cur=con.cursor()
-        cur.execute("SELECT * from inventory where threshold>product_qty ORDER BY product_qty ASC")
-        rows=cur.fetchall()
-        if len(rows)!=0:
-            self.invent_table.delete(*self.invent_table.get_children())
-            for row in rows:
-                self.invent_table.insert('',END,values=row)
-                con.commit()
-        con.close()
+        self.data()
+        for x in self.invent_table.get_children():
+            if not self.invent_table.item(x)['values'][2]<self.invent_table.item(x)['values'][5]:
+                self.invent_table.detach(x)
 
     def clear(self):
         self.product_id.set(str(random.randint(1000,9999)))
         self.product_name.set("")
         self.product_qty.set("")  
         self.product_price.set("") 
-        self.threshold.set("")
 
     def get_cursor(self,ev):
         cursor_row=self.invent_table.focus()
@@ -181,15 +171,14 @@ class Customer:
         self.product_name.set(row[1])
         self.product_qty.set(row[2])
         self.product_price.set(row[3]) 
-        self.threshold.set(row[4])
         
     def update_data(self):
-        if self.product_name.get()!="" and self.product_qty.get()!="" and self.product_price.get()!="" and self.threshold.get()!="":
+        if self.product_name.get()!="" and self.product_qty.get()!="" and self.product_price.get()!="":
             con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
             cur=con.cursor()
-            cur.execute("UPDATE inventory SET product_name=%s,product_qty=%s,product_price=%s,threshold=%s WHERE product_id=%s",(self.product_name.get(),self.product_qty.get(),self.product_price.get(),self.threshold.get(),self.product_id.get()))
+            cur.execute("UPDATE inventory SET product_name=%s,product_qty=%s,product_price=%s WHERE product_id=%s",(self.product_name.get(),self.product_qty.get(),self.product_price.get(),self.product_id.get()))
             con.commit()
-            self.fetch_data()
+            self.data()
             self.clear()
             con.close()
     
@@ -200,7 +189,7 @@ class Customer:
         con.commit()
         con.close()
         messagebox.showinfo("Success","Product removed!",parent = self.root)
-        self.fetch_data()
+        self.data()
         self.clear()
     
     def search_data(self,event): 
@@ -213,7 +202,7 @@ class Customer:
         if len(rows)!=0:
             self.invent_table.delete(*self.invent_table.get_children())
             for row in rows:
-                self.invent_table.insert('',END, values=row)
+                self.invent_table.insert('',END, values=(row[0],row[1],row[2],row[3],row[4],0))
             con.commit()
         con.close()
 
@@ -394,38 +383,11 @@ class Customer:
         win.mainloop()
     
     def sale_records(self):
-        con=pymysql.connect(host="localhost",user="root",password="root",database="ims")
-        cur=con.cursor()
-        cur.execute("SELECT * FROM inventory ORDER BY product_id ASC")
-        rows=cur.fetchall()
-        if len(rows)!=0:
-            self.forcast_table.delete(*self.forcast_table.get_children())
-            for row in rows:
-                if row[5]<=10:
-                    monthly=10
-                elif row[5]<=20:
-                    monthly=20
-                elif row[5]<=30:
-                    monthly=30
-                elif row[5]<=40:
-                    monthly=40
-                elif row[5]<=50:
-                    monthly=50
-                elif row[5]<=60:
-                    monthly=60
-                elif row[5]<=70:
-                    monthly=70
-                elif row[5]<=80:
-                    monthly=80
-                elif row[5]<=90:
-                    monthly=90
-                elif row[5]<=100:
-                    monthly=100
-                
-                vals=(row[0],row[1],row[5],monthly,monthly*12)
-                self.forcast_table.insert('',END,values=vals)
-            con.commit()
-        con.close()
+        self.forcast_table.delete(*self.forcast_table.get_children())
+        for x in self.invent_table.get_children():
+            m=(self.invent_table.item(x)['values'][5]-5)*int(self.n[0])+5
+            vals=(self.invent_table.item(x)['values'][0],self.invent_table.item(x)['values'][1],self.invent_table.item(x)['values'][4],m,m*12)
+            self.forcast_table.insert('',END,values=vals)
     
     def month_graph(self):
         days=[]
@@ -452,7 +414,7 @@ class Customer:
             sales.append(amount)
             con.commit
             con.close
-            i=i-1
+            i-=1
         days.reverse()
         sales.reverse()
         selling_price=sum(sales)
@@ -481,16 +443,16 @@ class Customer:
         os.remove("MGraph.jpg")
     
     def product_graph(self):
-        self.fetch_data()
+        self.data()
         products=[]
         sales=[]
-        l = [(self.invent_table.set(k, 5), k) for k in self.invent_table.get_children('')]
+        l = [(self.invent_table.set(k, 4), k) for k in self.invent_table.get_children('')]
         l.sort(key=lambda t: int(t[0]),reverse=True)
         for index, (val, k) in enumerate(l):
             self.invent_table.move(k, '', index)
         for x in self.invent_table.get_children():
             products.append(self.invent_table.item(x)['values'][1])
-            sales.append(self.invent_table.item(x)['values'][5])
+            sales.append(self.invent_table.item(x)['values'][4])
         products=products[:5]
         sales=sales[:5]
         plt.clf()
@@ -505,7 +467,7 @@ class Customer:
         self.graph=Label(self.root3,image=self.prod_graph)
         self.graph.place(x=10,y=80,width=780,height=500)
         os.remove("PGraph.jpg")
-        self.fetch_data()
+        self.data()
     
     def num_validate(self,event):
         if event.keysym == 'Tab':
