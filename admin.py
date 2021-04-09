@@ -147,7 +147,7 @@ class Customer:
         if len(rows)!=0:
             self.invent_table.delete(*self.invent_table.get_children())
             for row in rows:
-                self.invent_table.insert('',END,values=(row[0],row[1],row[2],row[3],row[4],int(row[4]/int(self.n[0]))+5))
+                self.invent_table.insert('',END,values=(row[0],row[1],row[2],row[3],row[4],int(row[4]/int(self.n[0])+row[4]**0.5)))
                 con.commit()
         con.close()
         
@@ -202,7 +202,7 @@ class Customer:
         if len(rows)!=0:
             self.invent_table.delete(*self.invent_table.get_children())
             for row in rows:
-                self.invent_table.insert('',END, values=(row[0],row[1],row[2],row[3],row[4],int(row[4]/int(self.n[0]))+5))
+                self.invent_table.insert('',END, values=(row[0],row[1],row[2],row[3],row[4],int(row[4]/int(self.n[0])+row[4]**0.5)))
             con.commit()
         con.close()
 
@@ -385,8 +385,8 @@ class Customer:
     def sale_records(self):
         self.forcast_table.delete(*self.forcast_table.get_children())
         for x in self.invent_table.get_children():
-            m=(self.invent_table.item(x)['values'][5]-5)*int(self.n[0])+5
-            vals=(self.invent_table.item(x)['values'][0],self.invent_table.item(x)['values'][1],self.invent_table.item(x)['values'][4],m,m*12)
+            m=self.invent_table.item(x)['values'][5]*5
+            vals=(self.invent_table.item(x)['values'][0],self.invent_table.item(x)['values'][1],self.invent_table.item(x)['values'][4],m,m*13)
             self.forcast_table.insert('',END,values=vals)
     
     def month_graph(self):
