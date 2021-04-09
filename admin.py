@@ -202,7 +202,7 @@ class Customer:
         if len(rows)!=0:
             self.invent_table.delete(*self.invent_table.get_children())
             for row in rows:
-                self.invent_table.insert('',END, values=(row[0],row[1],row[2],row[3],row[4],0))
+                self.invent_table.insert('',END, values=(row[0],row[1],row[2],row[3],row[4],int(row[4]/int(self.n[0]))+5))
             con.commit()
         con.close()
 
