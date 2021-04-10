@@ -147,12 +147,10 @@ class Bill_App:
         CPaylbl.grid(row=1,column=2,padx=10,pady=5,sticky="w")
         CPayEntry = Entry(F6,width=10, font=("Times",14,"bold"),textvariable=self.customer_pay,bd=3, relief=SUNKEN,state=DISABLED)
         CPayEntry.grid(row=1,column=3,padx=10,pady=5)
-        total_btn=Button(F6,text="Total",bg="red2",fg="white",font =("Times New Roman",18,"bold"),command=self.total,bd=3)
-        total_btn.place(x=730,y=10,width=100,height=45)
         GBill_btn=Button(F6,text="Generate Bill",bg="red2",fg="white",font =("Times New Roman",18,"bold"),command=self.payment,bd=3)
-        GBill_btn.place(x=840,y=10,width=150,height=45)
+        GBill_btn.place(x=780,y=10,width=150,height=45)
         Clear_btn=Button(F6,text="Clear",bg="red2",fg="white",font =("Times New Roman",18,"bold"),command=self.clear,bd=3)
-        Clear_btn.place(x=1000,y=10,width=100,height=45)
+        Clear_btn.place(x=950,y=10,width=100,height=45)
         self.welcome_bill()
 
     def search_item(self,ev):
