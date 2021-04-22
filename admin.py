@@ -76,7 +76,7 @@ class Customer:
         forecast_lbl=Label(self.btn_frame,text="Forecasting",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=1,padx=10,pady=0)
         userdet_btn=Button(self.btn_frame,image=self.userdet_b,command=self.user_detail,width=40,height=40,bg="red2",bd=3).grid(row=0,column=2,padx=10,pady=5)
         userdet_lbl=Label(self.btn_frame,text="User details",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=2,padx=10,pady=0)
-        Exit_btn=Button(self.btn_frame,image=self.exit_b,command=self.exit,width=40,height=40,bg="red2",bd=3).grid(row=0,column=3,padx=10,pady=5)
+        Exit_btn=Button(self.btn_frame,image=self.exit_b,command=self.logout,width=40,height=40,bg="red2",bd=3).grid(row=0,column=3,padx=10,pady=5)
         Exit_lbl=Label(self.btn_frame,text="Logout",bg="white",fg="black",font=("times new roman",12,"bold")).grid(row=1,column=3,padx=10,pady=0)
         
         self.details_frame=Frame(self.root,bd=5,relief=RIDGE,bg="white")
@@ -116,7 +116,7 @@ class Customer:
         self.invent_table.bind("<ButtonRelease-1>",self.get_cursor)
         self.data()
     
-    def exit(self):
+    def logout(self):
         mes= messagebox.askyesno("Notification","Do You want to logout?")    
         if mes > 0:
             self.root.destroy()
@@ -147,7 +147,7 @@ class Customer:
         if len(rows)!=0:
             self.invent_table.delete(*self.invent_table.get_children())
             for row in rows:
-                self.invent_table.insert('',END,values=(row[0],row[1],row[2],row[3],row[4],int(row[4]/int(self.n[0])+row[4]**0.5)))
+                self.invent_table.insert('',END,values=(row[0],row[1],row[2],row[3],row[4],int(row[4]/int(self.n[0])+row[4]**0.5*1.65)))
                 con.commit()
         con.close()
         

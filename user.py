@@ -56,7 +56,7 @@ class Bill_App:
         bill_btn=Button(F1,text="Past orders",command=self.show_bills,bg="red2",fg="white",bd=3,font =("Times New Roman",20,"bold"))
         bill_btn.place(x=900,y=0,width=150,height=45)
         contact_btn=Button(F1,image=self.contact_b,command=self.contact,compound=TOP,pady=6,bg="red2",bd=3).place(x=1390,y=0,width=45,height=45)
-        Exit_btn=Button(F1,image=self.exit_b,command=self.exit,width=80,height=65,compound=TOP,pady=6,bg="red2",bd=3).place(x=1450,y=0,width=45,height=45)
+        Exit_btn=Button(F1,image=self.exit_b,command=self.logout,width=80,height=65,compound=TOP,pady=6,bg="red2",bd=3).place(x=1450,y=0,width=45,height=45)
 
         F2=LabelFrame(self.root,bd=5,relief=GROOVE, text="Search Items",font=("times new roman",15,"bold"),fg="Black",bg="white")
         F2.place(x=20,y=170,width=310,height=460)
@@ -209,7 +209,7 @@ class Bill_App:
         else:
             self.root4 = Toplevel()
             self.root4.title("Inventory Management")
-            self.root4.geometry("750x400+375+200")
+            self.root4.geometry("750x500+375+130")
             self.cardno = StringVar()
             self.cardname = StringVar()
             self.exp_month = StringVar()
@@ -220,13 +220,13 @@ class Bill_App:
             title2=Label(self.root4,text="Online Payment",bd=5,relief=GROOVE,fg="white",bg="red2",font=("times new roman",30,"bold"))
             title2.pack(side=TOP,fill=X)
             self.checkout_frame = LabelFrame(self.root4, text="Online Payment", bg = "white", font =("Times New Roman",20))
-            self.checkout_frame.place(x = 55, y =80 , height = 300, width = 630)
+            self.checkout_frame.place(x = 55, y =80 , height = 400, width = 630)
             card_no = Label(self.checkout_frame, text = " Card No.   : ",bg = "tomato", font =("Times New Roman",16)).grid(row = 0, column = 0,padx = 10, pady = 15,sticky="w")
-            self.card_noen = Entry(self.checkout_frame, textvariable = self.cardno,bd=3,width = 27,bg = "LightGray", font =("Times New Roman",16))
+            self.card_noen = Entry(self.checkout_frame, textvariable = self.cardno,bd=3,width = 30,bg = "LightGray", font =("Times New Roman",16))
             self.card_noen.grid(row = 0, column = 1,padx = 10, pady = 15,sticky="w")
             self.card_noen.bind("<KeyPress>",self.card_no)
             card_name = Label(self.checkout_frame, text = " Name on Card : ",bg = "tomato", font =("Times New Roman",16)).grid(row = 1, column = 0,padx = 10, pady = 15,sticky="w")
-            self.card_nameen = Entry(self.checkout_frame, textvariable = self.cardname,bd=3,width = 27,bg = "LightGray", font =("Times New Roman",16))
+            self.card_nameen = Entry(self.checkout_frame, textvariable = self.cardname,bd=3,width = 30,bg = "LightGray", font =("Times New Roman",16))
             self.card_nameen.grid(row = 1, column = 1,columnspan=4,padx = 10, pady = 15,sticky="w")
             self.card_nameen.bind("<KeyPress>",self.card_name)
             exp_date = Label(self.checkout_frame, text = " Expiry Date : ",bg = "tomato", font =("Times New Roman",16)).grid(row = 2, column = 0,padx = 10, pady = 15,sticky="w")
@@ -242,11 +242,14 @@ class Bill_App:
             self.cvv_en = Entry(self.checkout_frame, textvariable = self.cvv_no,bd=3,width = 5,bg = "LightGray", font =("Times New Roman",18))
             self.cvv_en.place(x=460,y=136,width=80,height=30)
             self.cvv_en.bind("<KeyPress>", self.cvv)
+            address=Label(self.checkout_frame, text = " Address : ",bg = "tomato", font =("Times New Roman",18)).grid(row = 3, column = 0,padx = 10, pady = 15,sticky="w")
+            self.address=Text(self.checkout_frame,bg="LightGray",height=3,width=30,font =("Times New Roman",18),bd=3)
+            self.address.grid(row = 3, column = 1,padx = 10, pady = 15,sticky="w")
             pay_btn=Button(self.checkout_frame,command=self.generate_bill,bg="red2",text="Confirm",fg="white",font =("Times New Roman",18,"bold"),bd=3)
-            pay_btn.place(x=250,y=200,width=120,height=40)
+            pay_btn.place(x=250,y=310,width=120,height=40)
     
     def generate_bill(self):
-        if self.card_noen.get() =="" or self.card_nameen.get()=="" or self.cvv_en.get()=="":
+        if self.card_noen.get() =="" or self.card_nameen.get()=="" or self.cvv_en.get()=="" or self.address.get(1.0, "end-1c")=="":
             messagebox.showerror("Error","All fields are mandatory",parent = self.root4)
         elif len(self.card_noen.get())<19:
             messagebox.showerror("Error","Invalid card number!",parent = self.root4)
@@ -533,7 +536,7 @@ class Bill_App:
         else: 
             widget.delete(x)
     
-    def exit(self):
+    def logout(self):
         mes= messagebox.askyesno("Notification","Do You want to logout?")    
         if mes > 0:
             self.root.destroy()

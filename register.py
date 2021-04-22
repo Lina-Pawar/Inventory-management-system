@@ -76,7 +76,7 @@ class User_Register:
         row = cur.fetchone()
         conn.commit()
         conn.close()
-        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        regex = '^[a-z0-9]+[\-._?[a-z0-9]+[@]+[a-z]+[.]+[a-z]{2,3}$'
         if row!=None:
             messagebox.showerror("Error","Username taken!",parent = self.root)
         elif int(self.contact.get())<1000000000:
@@ -151,7 +151,7 @@ class User_Register:
             self.cvalid.config(image=self.tick)
 
     def mail_check(self,event):
-        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        regex = '^[a-z0-9]+[\-._?[a-z0-9]+[@]+[a-z]+[.]+[a-z]{2,3}$'
         if not (re.search(regex,self.mail.get())):
             self.mvalid.config(image=self.cross)
         else:
