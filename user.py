@@ -6,7 +6,7 @@ import pymysql
 from datetime import date
 from prettytable import PrettyTable
 
-class Bill_App:
+class Buyer:
     def __init__(self,root,id):
         self.root=root
         self.root.geometry("1600x800+0+0")
@@ -544,7 +544,7 @@ class Bill_App:
 
 def run_user(id):
     root=Tk()
-    obb=Bill_App(root,id)
+    obb=Buyer(root,id)
     root.mainloop()
 
     
