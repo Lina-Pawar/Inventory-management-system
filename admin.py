@@ -10,7 +10,7 @@ import datetime
 from datetime import date,timedelta
 from tkcalendar import Calendar,DateEntry
 
-class Customer:
+class Seller:
     def __init__(self,root,id):
         self.root = root
         self.root.title("Inventory Management")
@@ -485,5 +485,5 @@ class Customer:
 
 def run_admin(id):
     root=Tk() 
-    obj=Customer(root,id)
+    obj=Seller(root,id)
     root.mainloop()
