@@ -141,7 +141,7 @@ class Seller:
         cur=con.cursor()
         cur.execute("SELECT * FROM inventory ORDER BY product_id ASC")
         rows=cur.fetchall()
-        d1 = datetime.datetime.strptime("2021-03-18", "%Y-%m-%d").date()
+        d1 = datetime.datetime.strptime("2021-04-18", "%Y-%m-%d").date()
         d2=date.today()
         self.n=str((d2-d1)).split(" ")
         if len(rows)!=0:
